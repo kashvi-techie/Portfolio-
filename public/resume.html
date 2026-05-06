@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kashvi Pundir - Product Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a1a1a;
+      --muted: #555;
+      --border: #c8c8c8;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body {
+      margin: 0;
+      font-family: "DM Sans", system-ui, sans-serif;
+      font-size: 9.1pt;
+      line-height: 1.34;
+      color: var(--ink);
+      background: #fff;
+    }
+    .page {
+      max-width: 190mm;
+      margin: 0 auto;
+      padding: 7mm 11mm 6mm;
+    }
+
+    h1 {
+      font-size: 14.5pt;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 4px;
+    }
+    .headline-metric {
+      margin: 0 0 4px;
+      font-size: 8.8pt;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.35;
+    }
+
+    .contact-header {
+      margin: 0 0 5px;
+      font-size: 8.35pt;
+      line-height: 1.38;
+    }
+    .portfolio-hero {
+      margin: 0 0 3px;
+      font-size: 8.6pt;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .portfolio-hero a {
+      color: #163f78;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 12px;
+      color: var(--muted);
+    }
+    .contact-row a {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .contact-row.primary {
+      margin-bottom: 4px;
+    }
+    .contact-social {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px 10px;
+      align-items: start;
+      width: 100%;
+    }
+    @media (max-width: 520px) {
+      .contact-social { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    .social-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      min-width: 0;
+    }
+    .social-item .lbl {
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 8.35pt;
+      letter-spacing: 0.02em;
+    }
+    .social-item a.lnk {
+      font-size: 8.2pt;
+      color: #1a4d8c;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      word-break: break-all;
+      line-height: 1.3;
+    }
+    .social-item a.lnk:visited { color: #5c3d8c; }
+    .social-item a.lnk:hover { color: var(--ink); }
+
+    .role-line {
+      font-size: 9pt;
+      font-weight: 600;
+      margin: 0 0 4px;
+      line-height: 1.3;
+    }
+    .role-line .sep { color: var(--muted); font-weight: 500; padding: 0 5px; }
+
+    .pitch {
+      margin: 0 0 7px;
+      padding: 0 0 0 7px;
+      border-left: 2px solid var(--ink);
+      font-size: 9pt;
+      line-height: 1.38;
+      font-weight: 500;
+    }
+    .pitch-label {
+      font-weight: 700;
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 2px;
+      color: var(--muted);
+    }
+
+    h2 {
+      font-size: 9.35pt;
+      font-weight: 700;
+      margin: 9px 0 5px;
+      padding: 2px 0 2px;
+      border-bottom: 1.5px solid var(--ink);
+      letter-spacing: 0.02em;
+      page-break-after: avoid;
+    }
+    header + h2 { margin-top: 0; }
+
+    .table-wrap {
+      width: 100%;
+      page-break-inside: avoid;
+    }
+    table.competencies {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.2pt;
+      line-height: 1.28;
+      table-layout: fixed;
+      border: 1px solid var(--border);
+    }
+    table.competencies col.c-domain { width: 16%; }
+    table.competencies col.c-impact { width: 48%; }
+    table.competencies col.c-skills { width: 36%; }
+
+    table.competencies th,
+    table.competencies td {
+      border: 1px solid var(--border);
+      padding: 3px 6px;
+      text-align: left;
+    }
+    table.competencies thead th {
+      background: #ececec;
+      font-weight: 700;
+      font-size: 7.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      vertical-align: middle;
+      padding: 4px 6px;
+    }
+    table.competencies tbody td {
+      vertical-align: top;
+    }
+    table.competencies td.domain {
+      font-weight: 700;
+      font-size: 8.85pt;
+      vertical-align: middle;
+    }
+    table.competencies td.skills {
+      color: var(--muted);
+      font-size: 8.5pt;
+    }
+
+    .job-head {
+      font-weight: 700;
+      font-size: 9.1pt;
+      margin: 0 0 3px;
+      page-break-after: avoid;
+    }
+    .job-head .at { font-weight: 600; color: var(--muted); }
+    h3.exp-sub {
+      font-size: 8.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin: 6px 0 3px;
+      page-break-after: avoid;
+    }
+    h3.exp-sub:first-of-type { margin-top: 0; }
+    .contract-head {
+      font-weight: 700;
+      font-size: 9pt;
+      margin: 0 0 3px;
+      line-height: 1.32;
+    }
+    .contract-head .muted { font-weight: 500; }
+    .exp-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .exp-list li {
+      margin: 0 0 2px;
+      padding-left: 10px;
+      position: relative;
+      font-size: 8.95pt;
+    }
+    .exp-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.42em;
+      width: 4px;
+      height: 4px;
+      background: var(--ink);
+    }
+    .exp-list strong { font-weight: 700; }
+    .exp-list li.exp-win {
+      margin-top: 3px;
+      padding: 4px 8px 4px 11px;
+      margin-left: 0;
+      margin-bottom: 2px;
+      background: linear-gradient(90deg, #f0f4f8 0%, #f8fafc 100%);
+      border-left: 3px solid var(--ink);
+      border-radius: 0 3px 3px 0;
+      font-weight: 500;
+      list-style: none;
+    }
+    .exp-list li.exp-win::before {
+      display: none;
+    }
+    .exp-list li.exp-win strong {
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .edu-block { margin-bottom: 2px; font-size: 8.65pt; }
+    .edu-line {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      width: 100%;
+    }
+    .edu-school { flex: 1; min-width: 0; }
+    .edu-date {
+      flex: 0 0 auto;
+      text-align: right;
+      min-width: 7.2em;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.01em;
+    }
+    .edu-line--school-only {
+      justify-content: flex-start;
+    }
+    .muted { color: var(--muted); font-size: 8.65pt; }
+
+    .project { margin-bottom: 3px; font-size: 8.35pt; page-break-inside: avoid; }
+    .project-title-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 4px 8px;
+      margin-bottom: 2px;
+    }
+    .project-title { font-weight: 700; font-size: 8.65pt; }
+    .project-proof {
+      font-size: 7.85pt;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .project-proof a {
+      color: #1a4d8c;
+      text-decoration: underline;
+      text-underline-offset: 1px;
+    }
+    .project-proof .mid { color: #aaa; margin: 0 5px; font-weight: 400; }
+    .project-meta { color: var(--muted); font-size: 8.1pt; margin-bottom: 2px; }
+    .project p { margin: 1px 0 0; }
+    .project ul {
+      margin: 2px 0 0;
+      padding-left: 1.05em;
+    }
+    .project ul li { margin: 0 0 1px; }
+
+    .projects-compact .project:last-child { margin-bottom: 0; }
+
+    .table-wrap,
+    .exp-list,
+    .projects-compact {
+      margin-bottom: 6px;
+    }
+
+    .toolkit {
+      margin-top: 6px;
+      padding-top: 4px;
+      border-top: 1px solid var(--border);
+      font-size: 8.1pt;
+      line-height: 1.35;
+      page-break-inside: avoid;
+    }
+    .toolkit h2 {
+      margin-top: 0;
+      margin-bottom: 3px;
+      font-size: 9pt;
+    }
+    .toolkit p {
+      margin: 0 0 2px;
+    }
+    .toolkit strong {
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .toolkit .ai-spotlight strong {
+      font-weight: 800;
+      letter-spacing: 0.01em;
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    @media print {
+      body { font-size: 9.5pt; }
+      .page {
+        max-width: none;
+        padding: 8mm 12mm 8mm;
+        margin: 0;
+      }
+      .contact-row.primary a { border: none; color: inherit; }
+      .social-item a.lnk {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-offset: 1px;
+      }
+      .project-proof a {
+        color: inherit;
+        text-decoration: underline;
+      }
+      table.competencies thead th { background: #e8e8e8 !important; }
+      h2 { margin-top: 6px; }
+      .page { padding: 6mm 10mm 5mm !important; }
+      body { font-size: 8.85pt; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header>
+      <h1>Kashvi Pundir</h1>
+      <p class="headline-metric">Built and shipped 5+ real-world products including a live luxury concierge platform.</p>
+      <div class="contact-header">
+        <p class="portfolio-hero">Portfolio: <a href="https://www.behance.net/kashvipcm14p" target="_blank" rel="noopener noreferrer">behance.net/kashvipcm14p</a></p>
+        <div class="contact-row primary">
+          <span>+91 7902150755</span>
+          <span>|</span>
+          <a href="mailto:kashvipcm@gmail.com">kashvipcm@gmail.com</a>
+        </div>
+        <div class="contact-social">
+          <div class="social-item">
+            <span class="lbl">GitHub</span>
+            <a class="lnk" href="https://github.com/kashvi67631" target="_blank" rel="noopener noreferrer">github.com/kashvi67631</a>
+          </div>
+          <div class="social-item">
+            <span class="lbl">Behance</span>
+            <a class="lnk" href="https://www.behance.net/kashvipcm14p" target="_blank" rel="noopener noreferrer">behance.net/kashvipcm14p</a>
+          </div>
+          <div class="social-item">
+            <span class="lbl">Dribbble</span>
+            <a class="lnk" href="https://dribbble.com/kashvipcm14" target="_blank" rel="noopener noreferrer">dribbble.com/kashvipcm14</a>
+          </div>
+          <div class="social-item">
+            <span class="lbl">LinkedIn</span>
+            <a class="lnk" href="https://www.linkedin.com/in/kashvi-pundir-3502183b1" target="_blank" rel="noopener noreferrer">www.linkedin.com/in/kashvi-pundir-3502183b1</a>
+          </div>
+        </div>
+      </div>
+      <p class="role-line">
+        B.Tech CSE (1st Year)<span class="sep">|</span>AI-Native Product Designer | Shipping real-world products with code
+      </p>
+      <div class="pitch">
+        <div class="pitch-label">Pitch</div>
+        Started as a designer, learned Figma in 15 days, and quickly moved to handling real client projects. Now building AI-native tools that bridge design and production.
+      </div>
+    </header>
+
+    <h2>Core competencies and impact</h2>
+    <div class="table-wrap">
+      <table class="competencies">
+        <colgroup>
+          <col class="c-domain">
+          <col class="c-impact">
+          <col class="c-skills">
+        </colgroup>
+        <thead>
+          <tr>
+            <th scope="col">Domain</th>
+            <th scope="col">Task and impact</th>
+            <th scope="col">Key skills</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="domain">Figma</td>
+            <td>Designed high-fidelity, brand-sensitive UI/UX for Sortedd (luxury concierge: trust, restraint, premium polish) and SaaS onboarding flows.</td>
+            <td class="skills">Design systems, auto-layout, prototyping, visual hierarchy.</td>
+          </tr>
+          <tr>
+            <td class="domain">AI Dev</td>
+            <td>Built production-ready design-to-code workflows and rapid iteration systems for AI-assisted product shipping.</td>
+            <td class="skills">Rapid prototyping, API integration, technical feasibility, product-to-engineering translation.</td>
+          </tr>
+          <tr>
+            <td class="domain">Web Tech</td>
+            <td>Developed responsive interfaces with motion (GSAP, Framer Motion) on Next.js 15.</td>
+            <td class="skills">Tailwind CSS v4, TypeScript, Git/GitHub, Vercel.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Professional experience</h2>
+
+    <h3 class="exp-sub">Internship</h3>
+    <p class="job-head">Design Intern <span class="at">@</span> Mythaverse <span class="muted">(Jan 2026 - Apr 2026)</span></p>
+    <ul class="exp-list">
+      <li>Designed and shipped UI for SaaS products from wireframes to developer-ready specs.</li>
+      <li><strong>Reduced developer handoff time by 20%</strong> through reusable design systems and cleaner Figma-to-dev delivery.</li>
+      <li>Collaborated with engineering to improve design-to-code consistency and production quality.</li>
+    </ul>
+
+    <h3 class="exp-sub">Freelance / contract</h3>
+    <p class="contract-head">Design &amp; Dev Contractor <span class="muted">|</span> Sortedd</p>
+    <ul class="exp-list">
+      <li><strong>Challenge:</strong> Balance <strong>luxury-brand UX</strong> (quiet confidence, editorial typography, motion that feels expensive—not flashy) with a <strong>technical lift</strong>: migrating a legacy concierge site to <strong>Next.js 15</strong> (App Router) and Tailwind CSS v4 without diluting the brand.</li>
+      <li><strong>Action:</strong> Rebuilt layouts and components for App Router, performance budgets, and maintainable design tokens while preserving high-trust visual language end users expect from a premium service.</li>
+      <li><strong>Result:</strong> <strong>Reduced bundle size by 30%</strong> and <strong>improved PageSpeed score from 65 to 92</strong>; <strong>100% design-to-code match</strong> on shipped screens.</li>
+      <li class="exp-win"><strong>Outcome:</strong> Live site shipped with strong client feedback—product story and engineering migration aligned.</li>
+    </ul>
+
+    <h2>Education</h2>
+    <div class="edu-block">
+      <div class="edu-line">
+        <span class="edu-school"><strong>GLA University</strong> - B.Tech CSE, Greater Noida</span>
+        <span class="edu-date muted">Aug 2025 - 2029</span>
+      </div>
+    </div>
+    <div class="edu-block">
+      <div class="edu-line edu-line--school-only">
+        <span class="edu-school"><strong>R.A.N Public School</strong> - High School, Dibdiba</span>
+      </div>
+    </div>
+
+    <h2>Projects</h2>
+    <div class="projects-compact">
+      <div class="project">
+        <div class="project-title-row">
+          <span class="project-title">LuxeGen — AI-Native Design-to-Code Workspace</span>
+        </div>
+        <div class="project-meta">Next.js 15, Gemini 1.5 API, Tailwind CSS v4, Framer Motion</div>
+        <ul>
+          <li>Implemented a Custom Regex Sanitizer to handle unstable AI code streams, ensuring valid React syntax in live previews.</li>
+          <li>Architected a fail-safe deployment pipeline on Vercel for monorepo structures, resolving root directory and routing conflicts.</li>
+          <li>Integrated Exponential Backoff and retry logic to recover from Gemini API 429 (Rate Limit) and 503 (Overloaded) errors.</li>
+          <li><strong>Impact:</strong> Improved production reliability by auto-recovering from partial AI code generation and malformed syntax.</li>
+        </ul>
+      </div>
+      <div class="project">
+        <div class="project-title-row">
+          <span class="project-title">Sortedd</span>
+          <span class="project-proof">(<a href="https://www.sortedd.in/" target="_blank" rel="noopener noreferrer">Live demo</a>) <span class="mid">|</span> (<a href="https://www.behance.net/kashvipcm14p" target="_blank" rel="noopener noreferrer">Behance case study</a>)</span>
+        </div>
+        <div class="project-meta">Luxury concierge — contract (see Freelance / contract)</div>
+        <p>Simplified a complex luxury concierge experience into a 3-step onboarding flow while maintaining premium brand feel.</p>
+        <p><strong>Live:</strong> <a href="https://www.sortedd.in/" target="_blank" rel="noopener noreferrer">Sortedd</a></p>
+      </div>
+      <div class="project">
+        <div class="project-title-row">
+          <span class="project-title">Thinkmate - Transforming the Future of Education</span>
+          <span class="project-proof">(<a href="https://www.behance.net/kashvipcm14p" target="_blank" rel="noopener noreferrer">Live demo</a>)</span>
+        </div>
+        <div class="project-meta">Next.js, Framer Motion, Gemini API, SVG animation</div>
+        <p><strong>Issue:</strong> Complex HR/B2B flows were hard to visualize. <strong>Solution:</strong> Next.js and Framer Motion with SVG neural-network motion, plus <strong>Gemini API</strong> integration for real-time educational coaching cues and adaptive micro-copy.</p>
+      </div>
+      <div class="project">
+        <p><strong>Other projects:</strong> Bridge The Gap, Robotic Arm Control UX, Lynkit (Navigator).</p>
+      </div>
+    </div>
+
+    <section class="toolkit" aria-label="Technical toolkit for ATS">
+      <h2>Technical toolkit</h2>
+      <p><strong>Design:</strong> Figma (Expert), Prototyping, Design Systems, Adobe Suite. <strong>Development:</strong> Next.js 15, React, TypeScript, Tailwind CSS v4, GSAP, Framer Motion, <strong>Vercel (deployment workflows)</strong>.</p>
+      <p class="ai-spotlight"><strong>AI systems:</strong> AI streaming architecture, resilient API handling, and code-sanitization pipelines for reliable live previews.</p>
+      <p><strong>AI tools:</strong> Cursor (Expert), V0.dev, Midjourney.</p>
+    </section>
+  </div>
+</body>
+</html>
