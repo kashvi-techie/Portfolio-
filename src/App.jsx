@@ -8,12 +8,8 @@ import {
 } from "framer-motion";
 import { PortfolioSections } from "./PortfolioSections.jsx";
 import { ContactFooter } from "./ContactFooter.jsx";
-import { CursorFollower } from "./CursorFollower.jsx";
-import { FeatherGlyph, FEATHER_PATHS } from "./PeacockLeafDecor.jsx";
 import {
   LUXURY_SPRING,
-  staggerContainer,
-  staggerItem,
   sectionFloatMotion,
 } from "./motionLuxury.js";
 
@@ -62,9 +58,25 @@ function AnimatedWords({
   );
 }
 
-const HERO_SUB = "Design systems · production code · fast shipping.";
+const HERO_SUB =
+  "Building resilient design-to-code systems and premium digital experiences.";
+const HERO_STACK = ["Next.js 15", "Tailwind v4", "Figma", "AI Tools", "UI UX"];
 const ABOUT_BODY =
   "Designer who ships. Figma to live products — luxury UX to AI-native tools.";
+const ABOUT_CARDS = [
+  {
+    title: "Ship-First Mindset",
+    body: "Launch early, learn fast — shipping real products beats polishing decks.",
+  },
+  {
+    title: "Performance Obsessed",
+    body: "Lighthouse 92 PageSpeed — speed and clarity as product features, not afterthoughts.",
+  },
+  {
+    title: "AI-Powered Workflow",
+    body: "From prompt to UI with Cursor and the Gemini API — design intelligence wired into the build.",
+  },
+];
 
 function buildSchedule(reduceMotion) {
   if (reduceMotion) {
@@ -76,7 +88,6 @@ function buildSchedule(reduceMotion) {
       heroTitle: 0,
       heroSub: 0,
       heroButtons: 0,
-      aboutBody: 0,
     };
   }
 
@@ -95,15 +106,10 @@ function buildSchedule(reduceMotion) {
   run("linkedinNav", "LinkedIn");
 
   t += 0.08;
-  run("heroTitle", "AI-Native Product Engineer & Designer");
+  run("heroTitle", "Kashvi Pundir — AI-Native Product Designer & Engineer.");
   run("heroSub", HERO_SUB, 0.04);
 
   out.heroButtons = t + 0.06;
-  t = out.heroButtons + 0.42;
-
-  t += 0.12;
-  run("aboutBody", ABOUT_BODY, 0.032);
-
   return out;
 }
 
@@ -129,7 +135,6 @@ export default function App() {
     () => sectionFloatMotion(reduceMotion, { amount: 0.18 }),
     [reduceMotion]
   );
-
   const [navOpen, setNavOpen] = useState(false);
 
   useEffect(() => {
@@ -343,7 +348,7 @@ export default function App() {
           <div className="hero-inner">
             <div className="hero-copy">
               <AnimatedWords
-                text="AI-Native Product Engineer & Designer"
+                text="Kashvi Pundir — AI-Native Product Designer & Engineer."
                 as="h1"
                 className="hero-title"
                 baseDelay={schedule.heroTitle}
@@ -357,6 +362,31 @@ export default function App() {
                 wordStagger={0.04}
                 reduceMotion={reduceMotion}
               />
+              <motion.div
+                className="mb-5 flex flex-wrap gap-2 sm:mb-6 sm:gap-3"
+                initial={
+                  reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }
+                }
+                animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+                transition={
+                  reduceMotion
+                    ? { duration: 0 }
+                    : {
+                        duration: 0.4,
+                        delay: Math.max(0, schedule.heroSub + 0.12),
+                        ease: [0.22, 1, 0.36, 1],
+                      }
+                }
+              >
+                {HERO_STACK.map((item) => (
+                  <span
+                    key={item}
+                    className="inline-flex items-center rounded-full border border-white/45 bg-white/55 px-3 py-1.5 text-xs font-semibold tracking-wide text-slate-700 backdrop-blur-md"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </motion.div>
               <motion.div
                 className="hero-actions"
                 initial={
@@ -423,97 +453,32 @@ export default function App() {
         </motion.header>
 
         <motion.section
-          className="about-section overflow-x-clip"
-          aria-labelledby="about-heading"
+          id="about-heading"
+          className="about-section"
+          aria-labelledby="about-title"
           {...aboutFloat}
         >
-          <div className="relative mx-auto max-w-5xl px-4 py-2 sm:px-6 md:py-3 lg:px-8">
-            <div
-              className="relative overflow-visible rounded-[40px] border-[0.5px] border-white/20 bg-white/[0.07] p-12 shadow-[0_32px_80px_-28px_rgba(15,23,42,0.35)] backdrop-blur-2xl sm:p-14"
+          <div className="about-panel glass-floating rounded-[2rem] border border-white/20 p-6 sm:p-8 md:p-10">
+            <h2
+              id="about-title"
+              className="about-heading font-sans text-4xl font-bold uppercase tracking-[0.2em] text-slate-900 sm:text-5xl"
             >
-              <div
-                className="pointer-events-none absolute -right-4 -top-8 z-20 h-40 w-[5.5rem] sm:-right-6 sm:-top-12 sm:h-48 sm:w-28 md:h-52 md:w-32"
-                aria-hidden
-              >
-                <FeatherGlyph
-                  d={FEATHER_PATHS[1]}
-                  className="h-full w-full drop-shadow-[0_8px_28px_rgba(15,118,110,0.45)]"
-                  gradKey="about-hook"
-                />
-              </div>
-
-              <motion.h2
-                id="about-heading"
-                className="relative z-10 mb-8 max-w-[22ch] font-sans text-2xl font-bold uppercase leading-none tracking-[0.28em] text-slate-900 underline decoration-slate-900/75 decoration-2 underline-offset-[14px] [font-stretch:95%] sm:mb-10 sm:text-3xl sm:tracking-[0.26em]"
-                initial={
-                  reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }
-                }
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={
-                  reduceMotion ? { duration: 0 } : LUXURY_SPRING
-                }
-              >
-                About Me
-              </motion.h2>
-
-              <AnimatedWords
-                text={ABOUT_BODY}
-                as="p"
-                className="relative z-10 mb-0 max-w-2xl text-left text-base font-medium leading-[1.85] tracking-[-0.01em] text-slate-600 sm:text-lg"
-                baseDelay={schedule.aboutBody}
-                wordStagger={0.032}
-                reduceMotion={reduceMotion}
-              />
-
-              <motion.div
-                className="relative z-10 mt-10 flex flex-col gap-6 md:mt-12 md:flex-row md:items-stretch"
-                variants={staggerContainer(reduceMotion)}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, margin: "-24px" }}
-              >
-                <motion.article
-                  variants={staggerItem(reduceMotion)}
-                  className="flex flex-1 flex-col justify-between gap-4 rounded-[15px] bg-[#3E8DA8] p-6 text-white shadow-lg shadow-slate-900/15"
-                >
-                  <p className="text-base font-bold leading-tight text-white">
-                    Ship-First Mindset
+              About Me
+            </h2>
+            <p className="mt-6 max-w-3xl text-base font-medium leading-relaxed text-slate-600 sm:text-lg">
+              {ABOUT_BODY}
+            </p>
+            <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
+              {ABOUT_CARDS.map((card) => (
+                <article key={card.title} className="about-card">
+                  <h3 className="text-2xl font-bold tracking-[-0.02em] text-white">
+                    {card.title}
+                  </h3>
+                  <p className="mt-3 text-base font-medium leading-relaxed text-white/95">
+                    {card.body}
                   </p>
-                  <p className="text-sm font-medium leading-relaxed text-white/90">
-                    Launch early, learn fast — shipping real products beats
-                    polishing decks.
-                  </p>
-                </motion.article>
-                <motion.article
-                  variants={staggerItem(reduceMotion)}
-                  className="flex flex-1 flex-col justify-between gap-4 rounded-[15px] bg-[#3E8DA8] p-6 text-white shadow-lg shadow-slate-900/15"
-                >
-                  <p className="text-base font-bold leading-tight text-white">
-                    Performance Obsessed
-                  </p>
-                  <p className="text-sm font-medium leading-relaxed text-white/90">
-                    Lighthouse{" "}
-                    <span className="font-bold text-white">92</span> PageSpeed —
-                    speed and clarity as product features, not afterthoughts.
-                  </p>
-                </motion.article>
-                <motion.article
-                  variants={staggerItem(reduceMotion)}
-                  className="flex flex-1 flex-col justify-between gap-4 rounded-[15px] bg-[#3E8DA8] p-6 text-white shadow-lg shadow-slate-900/15"
-                >
-                  <p className="text-base font-bold leading-tight text-white">
-                    AI-Powered Workflow
-                  </p>
-                  <p className="text-sm font-medium leading-relaxed text-white/90">
-                    From prompt to UI with{" "}
-                    <span className="font-semibold text-white">Cursor</span> and
-                    the{" "}
-                    <span className="font-semibold text-white">Gemini API</span>{" "}
-                    — design intelligence wired into the build.
-                  </p>
-                </motion.article>
-              </motion.div>
+                </article>
+              ))}
             </div>
           </div>
         </motion.section>

@@ -6,25 +6,31 @@ export const PROJECT_SLIDES = [
   {
     id: "sortedd",
     title: "Sortedd",
-    previewUrl: "https://www.sortedd.in/",
+    previewImage: "/sortedd-project.png",
     context: "Luxury concierge · live",
     description:
-      "Refined the product experience and frontend structure for a premium concierge platform, with smoother user flow and production-ready UI delivery.",
-    tags: ["React", "TypeScript", "REST APIs", "Tailwind CSS", "Next.js"],
-    metrics: ["92 PageSpeed", "−30% bundle"],
-    githubHref: "https://github.com/kashvi67631",
+      "Rebuilt key UX flows with premium visual restraint and production-safe frontend architecture.",
+    details: [
+      "Designed for luxury-brand trust and editorial polish.",
+      "Performance jump: PageSpeed improved from 65 to 92.",
+    ],
+    tags: ["Next.js 15", "Tailwind v4", "Premium UX"],
+    metrics: ["65 → 92 PageSpeed", "−30% bundle"],
     liveHref: "https://www.sortedd.in/",
   },
   {
     id: "luxegen",
     title: "LuxeGen",
-    previewUrl: "https://ai-image-to-saa-s-product-generator-py8tkvdoe.vercel.app/",
+    previewImage: "/luxegen-project.png",
     context: "AI design-to-code · live",
     description:
-      "Built an AI-native design-to-code workflow with resilient rendering, safer generated output handling, and fast iteration from prompt to ship.",
-    tags: ["React", "Gemini API", "Code Sanitizer", "Vercel", "Tailwind CSS"],
+      "Built a resilient pipeline that converts unstable LLM responses into render-safe React components.",
+    details: [
+      "Before: raw LLM fragments often broke JSX trees.",
+      "After: sanitized, stream-safe output reliably renders in preview.",
+    ],
+    tags: ["Gemini API", "Regex Sanitizer", "Stream Guard"],
     metrics: ["Zero-crash previews", "429-aware backoff"],
-    githubHref: "https://github.com/kashvi67631",
     liveHref: "https://ai-image-to-saa-s-product-generator-py8tkvdoe.vercel.app/",
   },
 ];
@@ -69,13 +75,12 @@ export function ProjectLiveSlider({
                 transition={reduceMotion ? { duration: 0 } : LUXURY_SPRING}
               >
                 <div className="relative aspect-[16/10] w-full min-h-[220px] sm:min-h-[280px] md:aspect-[16/9] md:min-h-[320px]">
-                  <iframe
-                    title={`Live preview — ${slide.title}`}
-                    src={slide.previewUrl}
-                    className="h-full w-full border-0 bg-white"
+                  <img
+                    src={slide.previewImage}
+                    alt={`${slide.title} project preview`}
+                    className="h-full w-full object-cover"
                     loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-downloads"
+                    decoding="async"
                   />
                   <div className="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-linear-to-t from-slate-950/45 to-transparent" />
                 </div>
@@ -106,6 +111,12 @@ export function ProjectLiveSlider({
                   ))}
                 </div>
 
+                <ul className="ml-4 list-disc space-y-1 text-sm text-slate-600">
+                  {slide.details.map((detail) => (
+                    <li key={detail}>{detail}</li>
+                  ))}
+                </ul>
+
                 <div className="flex flex-wrap justify-start gap-2 sm:gap-3">
                   {slide.metrics.map((m) => (
                     <span key={m} className={projectMetricClass}>
@@ -124,16 +135,6 @@ export function ProjectLiveSlider({
                     className="inline-flex min-h-14 w-full items-center justify-center rounded-2xl border border-teal-400/40 bg-linear-to-r from-teal-600 to-teal-700 px-5 text-sm font-bold text-white shadow-lg shadow-teal-900/35 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 sm:w-auto sm:min-w-[11rem] sm:px-8 sm:text-base"
                   >
                     Open live site
-                  </motion.a>
-                  <motion.a
-                    href={slide.githubHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={reduceMotion ? undefined : { scale: 1.02, y: -2 }}
-                    whileTap={reduceMotion ? undefined : { scale: 0.98 }}
-                    className="inline-flex min-h-14 w-full items-center justify-center rounded-2xl border border-white/20 bg-white/15 px-5 text-sm font-bold text-slate-900 shadow-md backdrop-blur-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600 sm:w-auto sm:min-w-[11rem] sm:px-8 sm:text-base"
-                  >
-                    GitHub
                   </motion.a>
                 </div>
               </div>

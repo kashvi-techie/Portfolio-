@@ -1,12 +1,9 @@
 import { motion } from "framer-motion";
 import { LUXURY_SPRING, sectionFloatMotion } from "./motionLuxury.js";
 
+const EMAIL = "kashvipcm@gmail.com";
+
 const CONTACT_LINKS = [
-  {
-    label: "Email",
-    href: "mailto:kashvipcm@gmail.com",
-    text: "kashvipcm@gmail.com",
-  },
   {
     label: "GitHub",
     href: "https://github.com/kashvi67631",
@@ -20,6 +17,14 @@ const CONTACT_LINKS = [
 ];
 
 export function ContactFooter({ reduceMotion }) {
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+    } catch {
+      // noop for unsupported clipboard environments
+    }
+  };
+
   return (
     <footer
       id="contact"
@@ -52,9 +57,9 @@ export function ContactFooter({ reduceMotion }) {
 
           <div className="lg:max-w-md">
             <p className="mb-8 text-[0.65rem] font-semibold uppercase tracking-[-0.05em] text-white/75 lg:mb-10">
-              Contact
+              Socials
             </p>
-            <ul className="flex flex-col gap-9">
+            <ul className="flex flex-col gap-7">
               {CONTACT_LINKS.map((item, i) => (
                 <motion.li
                   key={item.href}
@@ -87,6 +92,21 @@ export function ContactFooter({ reduceMotion }) {
                 </motion.li>
               ))}
             </ul>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <a
+                href={`mailto:${EMAIL}`}
+                className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/30 bg-white/15 px-4 text-sm font-semibold text-white backdrop-blur-md"
+              >
+                {EMAIL}
+              </a>
+              <button
+                type="button"
+                onClick={copyEmail}
+                className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/35 bg-white/20 px-4 text-sm font-semibold text-white backdrop-blur-md transition hover:bg-white/30"
+              >
+                Copy Email
+              </button>
+            </div>
           </div>
         </div>
       </motion.div>

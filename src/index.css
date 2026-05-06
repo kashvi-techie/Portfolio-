@@ -745,7 +745,34 @@ body {
   scroll-margin-top: var(--sticky-nav-offset);
 }
 
-/* About — layout lives in App.jsx (glass shell + teal bento cards) */
+/* About panel style */
+.about-panel {
+  background: rgba(226, 237, 248, 0.72);
+}
+
+.about-heading {
+  line-height: 1;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.5rem;
+}
+
+.about-heading::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: rgba(15, 23, 42, 0.6);
+}
+
+.about-card {
+  border-radius: 1rem;
+  padding: 1.25rem;
+  background: #3f91ad;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.18);
+}
 
 /* Section spacing: 50px gap between major blocks */
 .page main > * + * {
@@ -754,4 +781,118 @@ body {
 
 .portfolio-sections > section + section {
   margin-top: 50px;
+}
+
+/* Tech stack auto-reel */
+.tech-marquee-shell {
+  position: relative;
+  overflow: hidden;
+  border: 0.5px solid rgba(255, 255, 255, 0.22);
+  border-radius: 1.35rem;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 1rem;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 9%,
+    #000 91%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 9%,
+    #000 91%,
+    transparent 100%
+  );
+}
+
+.tech-marquee-track {
+  display: flex;
+  min-width: max-content;
+  align-items: center;
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: tech-marquee-right 26s linear infinite;
+  will-change: transform;
+}
+
+.tech-marquee-shell:hover .tech-marquee-track {
+  animation-duration: 44s;
+}
+
+.tech-stack-card {
+  min-width: 150px;
+  height: 96px;
+  border-radius: 1rem;
+  border: 0.5px solid rgba(255, 255, 255, 0.34);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.26) 0%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.tech-stack-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 24px rgba(148, 163, 184, 0.25);
+}
+
+.stack-logo-wrap {
+  width: 2.35rem;
+  height: 2.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.72rem;
+  border: 0.5px solid rgba(255, 255, 255, 0.24);
+  background: rgba(15, 23, 42, 0.6);
+}
+
+.stack-logo {
+  width: 1.12rem;
+  height: 1.12rem;
+  filter: grayscale(1) brightness(0.95);
+  transition: filter 0.24s ease, transform 0.24s ease;
+}
+
+.tech-stack-card:hover .stack-logo {
+  filter: grayscale(0) brightness(1.08);
+  transform: scale(1.05);
+}
+
+.tech-stack-card__label {
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: #1f2937;
+  white-space: nowrap;
+}
+
+@keyframes tech-marquee-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tech-marquee-track {
+    animation: none;
+  }
 }
