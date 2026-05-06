@@ -218,7 +218,7 @@ export default function App() {
               <a href="#contact">Contact</a>
             </li>
             <li>
-              <a href="/resume.html" target="_blank" rel="noopener noreferrer">
+              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
                 <AnimatedWords
                   text="Resume"
                   as="span"
@@ -311,7 +311,7 @@ export default function App() {
                 </li>
                 <li>
                   <a
-                    href="/resume.html"
+                    href="/resume.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setNavOpen(false)}
@@ -375,7 +375,7 @@ export default function App() {
               >
                 <a
                   className="btn-glass"
-                  href="/resume.html"
+                  href="/resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

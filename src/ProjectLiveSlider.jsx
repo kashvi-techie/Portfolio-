@@ -18,14 +18,14 @@ export const PROJECT_SLIDES = [
   {
     id: "luxegen",
     title: "LuxeGen",
-    previewUrl: "https://ai-image-to-saa-s-product-generator.vercel.app/",
+    previewUrl: "https://ai-image-to-saa-s-product-generator-py8tkvdoe.vercel.app/",
     context: "AI design-to-code · live",
     description:
       "Built an AI-native design-to-code workflow with resilient rendering, safer generated output handling, and fast iteration from prompt to ship.",
     tags: ["React", "Gemini API", "Code Sanitizer", "Vercel", "Tailwind CSS"],
     metrics: ["Zero-crash previews", "429-aware backoff"],
     githubHref: "https://github.com/kashvi67631",
-    liveHref: "https://ai-image-to-saa-s-product-generator.vercel.app/",
+    liveHref: "https://ai-image-to-saa-s-product-generator-py8tkvdoe.vercel.app/",
   },
 ];
 
