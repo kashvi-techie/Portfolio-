@@ -28,7 +28,7 @@ export function ContactFooter({ reduceMotion }) {
   return (
     <footer
       id="contact"
-      className="site-footer-contact relative z-10 isolate mt-6 overflow-hidden sm:mt-8"
+      className="site-footer-contact relative isolate mt-6 overflow-hidden sm:mt-8"
       aria-labelledby="footer-contact-heading"
     >
       <div className="footer-contact-pattern pointer-events-none absolute inset-0 z-0" aria-hidden />

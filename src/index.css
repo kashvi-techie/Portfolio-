@@ -180,9 +180,12 @@ body {
   min-width: 0;
 }
 
-/* Footer / contact — fixed feather pattern (scrolls under content) */
+/* Footer / contact — fixed feather pattern (scrolls under content)
+   Keep z-index below .page (z-index 10) so sticky nav is not covered on small screens. */
 .site-footer-contact {
   width: 100%;
+  z-index: 5;
+  scroll-margin-top: var(--sticky-nav-offset);
 }
 
 .footer-contact-pattern {
