@@ -34,7 +34,7 @@ export function Projects() {
               transition={{ delay: i * 0.1, duration: 0.7 }}
             >
               <div className="overflow-hidden p-3 pb-0">
-                <ProjectPreview title={project.title} accent={project.accent} image={project.image} />
+                <ProjectPreview title={project.title} accent={project.accent} />
               </div>
               <div className="flex flex-1 flex-col p-5 sm:p-6">
                 <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#c9a227]/80">
@@ -120,7 +120,6 @@ export function Projects() {
                 <ProjectPreview
                   title={featured.title}
                   accent={featured.accent}
-                  image={featured.image}
                   variant="dashboard"
                 />
               </div>
