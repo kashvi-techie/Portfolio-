@@ -3,4 +3,3 @@ node_modules
 dist
 *.local
 .env*.local
-node_modules

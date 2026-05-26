@@ -1,19 +1,16 @@
 "use client";
 
-import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 
 interface ProjectPreviewProps {
   title: string;
   accent: string;
-  image?: string;
   variant?: "dashboard" | "card";
 }
 
 export function ProjectPreview({
   title,
   accent,
-  image,
   variant = "card",
 }: ProjectPreviewProps) {
   const reduceMotion = useReducedMotion();
@@ -24,26 +21,10 @@ export function ProjectPreview({
       whileHover={reduceMotion ? undefined : { scale: 1.03 }}
       transition={{ type: "spring", damping: 28, stiffness: 280 }}
     >
-      {image ? (
-        <div className="absolute inset-0">
-          <Image
-            src={image}
-            alt={`${title} screenshot`}
-            fill
-            className="object-cover opacity-90"
-            sizes="(max-width: 1024px) 100vw, 1024px"
-            priority={false}
-          />
-        </div>
-      ) : null}
       <div className="absolute inset-0 bg-gradient-to-br from-violet-950/80 via-[#0a0612] to-black/90" />
-      <div
-        className="absolute inset-0 opacity-40"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 30% 20%, rgba(201,162,39,0.2), transparent 50%)",
-        }}
-      />
+      <div className="absolute inset-0 opacity-40" style={{
+        backgroundImage: `radial-gradient(circle at 30% 20%, rgba(201,162,39,0.2), transparent 50%)`,
+      }} />
       {variant === "dashboard" ? (
         <div className="relative flex h-full flex-col p-4 sm:p-6">
           <div className="mb-4 flex items-center gap-2">

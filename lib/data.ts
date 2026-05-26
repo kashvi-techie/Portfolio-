@@ -52,7 +52,6 @@ export const PROJECTS = [
     liveHref: "#",
     featured: true,
     accent: "from-violet-600/40 to-fuchsia-900/30",
-    image: "/images/projects/omnipost.png",
   },
   {
     id: "luxegen",
@@ -66,7 +65,6 @@ export const PROJECTS = [
       "https://ai-image-to-saa-s-product-generator-py8tkvdoe.vercel.app/",
     featured: false,
     accent: "from-amber-600/30 to-violet-900/40",
-    image: "/images/projects/luxegen.png",
   },
   {
     id: "sortedd",
@@ -79,7 +77,6 @@ export const PROJECTS = [
     liveHref: "https://www.sortedd.in/",
     featured: false,
     accent: "from-teal-600/25 to-violet-900/35",
-    image: "/images/projects/sortedd.png",
   },
 ] as const;
 
