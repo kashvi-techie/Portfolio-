@@ -4,7 +4,7 @@ export const SITE = {
   email: "kashvipcm@gmail.com",
   github: "https://github.com/kashvi67631",
   linkedin: "https://www.linkedin.com/in/kashvi-pundir-3502183b1",
-  resume: "/resume.pdf",
+  resume: "https://drive.google.com/file/d/1xA5oilQ8cKMq1D1ZkWESv2Hbu63ROQZF/view?usp=sharing",
 } as const;
 
 export const NAV_LINKS = [
