@@ -6,7 +6,7 @@ import { SITE } from "@/lib/data";
 import { motion, useReducedMotion } from "framer-motion";
 import { Github, Linkedin, Mail } from "lucide-react";
 import { useState } from "react";
-import { sendForm } from "@emailjs/browser";
+import { send } from "@emailjs/browser";
 
 const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID?.trim();
 const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID?.trim();
@@ -25,6 +25,7 @@ const EMAILJS_CONFIGURED = !!(
 export function Contact() {
   const reduceMotion = useReducedMotion();
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,29 +44,45 @@ export function Contact() {
 
     setStatus("sending");
 
-    // Send the HTML form element directly so EmailJS maps input `name` attributes to template variables.
-    // Using sendForm with the public key as the fourth argument.
-    sendForm(
+    // Pass public key as the 4th arg (string) — this matches @emailjs/browser send signature
+    send(
       EMAILJS_SERVICE_ID!,
       EMAILJS_TEMPLATE_ID!,
-      form,
+      {
+        from_name: name,
+        from_email: email,
+        message: message,
+        reply_to: email,
+      },
       EMAILJS_PUBLIC_KEY!
     )
-      .then((response) => {
+      .then(() => {
         form.reset();
         setStatus("sent");
-        console.log("EmailJS sent:", response);
+        setErrorMessage(null);
       })
       .catch((error) => {
-        // Better error visibility
+        // Normalize error info for easier debugging
+        let detail = "";
         try {
-          console.error("EmailJS error details:", JSON.stringify(error));
+          if (error && typeof error === "object") {
+            // EmailJS HTTP errors often come back as { status, text }
+            // @ts-ignore
+            if ("status" in error && "text" in error) {
+              // @ts-ignore
+              detail = `status ${error.status} - ${error.text}`;
+            } else {
+              detail = JSON.stringify(error);
+            }
+          } else {
+            detail = String(error);
+          }
         } catch (e) {
-          console.error("EmailJS error details:", error);
+          detail = String(error);
         }
-        if (error && (error.text || error.status)) {
-          console.error("EmailJS status:", error.status, error.text);
-        }
+
+        console.error("EmailJS error details:", detail);
+        setErrorMessage(detail);
         setStatus("error");
       });
   };
