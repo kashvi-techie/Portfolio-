@@ -6,22 +6,52 @@ import { SITE } from "@/lib/data";
 import { motion, useReducedMotion } from "framer-motion";
 import { Github, Linkedin, Mail } from "lucide-react";
 import { useState } from "react";
+import { init, send } from "@emailjs/browser";
+
+const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "YOUR_SERVICE_ID";
+const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_TEMPLATE_ID";
+const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_PUBLIC_KEY";
+const EMAILJS_CONFIGURED =
+  ![EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY].some((value) =>
+    value.startsWith("YOUR_")
+  );
+
+init(EMAILJS_PUBLIC_KEY);
 
 export function Contact() {
   const reduceMotion = useReducedMotion();
-  const [status, setStatus] = useState<"idle" | "sent">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const data = new FormData(form);
-    const name = data.get("name") as string;
-    const email = data.get("email") as string;
-    const message = data.get("message") as string;
-    const subject = encodeURIComponent(`Portfolio inquiry from ${name}`);
-    const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
-    window.location.href = `mailto:${SITE.email}?subject=${subject}&body=${body}`;
-    setStatus("sent");
+    const formData = new FormData(form);
+    const name = String(formData.get("name") || "");
+    const email = String(formData.get("email") || "");
+    const message = String(formData.get("message") || "");
+
+    if (!EMAILJS_CONFIGURED) {
+      console.error("EmailJS environment variables are not configured.");
+      setStatus("error");
+      return;
+    }
+
+    setStatus("sending");
+
+    send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      from_name: name,
+      from_email: email,
+      message,
+      reply_to: email,
+    })
+      .then(() => {
+        form.reset();
+        setStatus("sent");
+      })
+      .catch((error) => {
+        console.error("EmailJS error:", error);
+        setStatus("error");
+      });
   };
 
   return (
@@ -112,10 +142,29 @@ export function Contact() {
               </div>
               <button
                 type="submit"
-                className="btn-gold w-full rounded-full py-3.5 text-sm font-semibold transition-transform hover:scale-[1.01] active:scale-[0.99]"
+                disabled={status === "sending" || !EMAILJS_CONFIGURED}
+                className="btn-gold w-full rounded-full py-3.5 text-sm font-semibold transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {status === "sent" ? "Opening mail client…" : "Send Message"}
+                {status === "idle" && (EMAILJS_CONFIGURED ? "Send Message" : "EmailJS not configured")}
+                {status === "sending" && "Sending..."}
+                {status === "sent" && "Message sent!"}
+                {status === "error" && "Retry"}
               </button>
+              {status === "sent" && (
+                <p className="mt-3 text-sm text-[#9cd5ff]">Thanks! Your message was sent successfully.</p>
+              )}
+              {status === "error" && (
+                <p className="mt-3 text-sm text-[#f59e0b]">
+                  EmailJS is not configured. Copy <code>.env.local.example</code> to{' '}
+                  <code>.env.local</code> and set your EmailJS IDs.
+                </p>
+              )}
+              {!EMAILJS_CONFIGURED && status === "idle" && (
+                <p className="mt-3 text-sm text-[#f59e0b]">
+                  EmailJS is not configured. Copy <code>.env.local.example</code> to{' '}
+                  <code>.env.local</code> and set your EmailJS IDs.
+                </p>
+              )}
             </motion.form>
           </ScrollReveal>
         </div>
