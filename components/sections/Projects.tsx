@@ -51,15 +51,9 @@ export function Projects() {
                     <Tag key={tag}>{tag}</Tag>
                   ))}
                 </div>
-                <a
-                  href={project.liveHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-[#e8d48b] transition-colors hover:text-[#c9a227]"
-                >
+                <Button href={project.liveHref} variant="gold" external icon className="mt-5">
                   View project
-                  <ArrowUpRight className="h-4 w-4" />
-                </a>
+                </Button>
               </div>
             </motion.article>
           ))}

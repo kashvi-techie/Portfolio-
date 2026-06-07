@@ -49,7 +49,7 @@ export const PROJECTS = [
       "Edge-native publishing pipeline with streaming AI generation, platform dispatch, and real-time metrics.",
     tags: ["Next.js 15", "Tailwind v4", "Framer Motion"],
     metrics: ["92 PageSpeed", "−30% bundle", "100% match"],
-    liveHref: "#",
+    liveHref: "https://omni-post-ai-beryl.vercel.app/",
     featured: true,
     accent: "from-violet-600/40 to-fuchsia-900/30",
   },
