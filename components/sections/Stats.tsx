@@ -10,7 +10,7 @@ export function Stats() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section className="section-pad border-y border-[#c9a227]/10 bg-black/20">
+    <section className="section-pad border-y border-gold/10 bg-black/20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <ScrollReveal>
           <p className="eyebrow text-center">Impact at a glance</p>
@@ -32,7 +32,7 @@ export function Stats() {
               <p className="font-editorial text-4xl font-semibold text-gold-gradient sm:text-5xl">
                 <AnimatedCounter value={stat.value} suffix={stat.suffix} />
               </p>
-              <p className="mt-3 text-xs font-medium uppercase tracking-[0.2em] text-[#9ca3af]">
+              <p className="mt-3 text-xs font-medium uppercase tracking-[0.2em] text-muted">
                 {stat.label}
               </p>
             </motion.div>

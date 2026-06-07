@@ -19,7 +19,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative min-h-[100dvh] overflow-hidden pt-28 pb-16 sm:pt-32 sm:pb-20"
+      className="relative min-h-dvh overflow-hidden pt-28 pb-16 sm:pt-32 sm:pb-20"
     >
       <PeacockIllustration />
 
@@ -36,7 +36,7 @@ export function Hero() {
         <div className="grid gap-12 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-8">
           <div className="max-w-2xl">
             <motion.h1
-              className="font-display text-[clamp(2.25rem,6vw,4rem)] font-bold leading-[1.05] tracking-tight text-[#f5f0e6]"
+              className="font-display text-[clamp(2.25rem,6vw,4rem)] font-bold leading-[1.05] tracking-tight text-cream"
               initial={reduceMotion ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -47,7 +47,7 @@ export function Hero() {
             </motion.h1>
 
             <motion.p
-              className="mt-6 max-w-xl text-base leading-relaxed text-[#9ca3af] sm:text-lg"
+              className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg"
               initial={reduceMotion ? false : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35, duration: 0.7 }}
@@ -95,9 +95,9 @@ export function Hero() {
               href={href}
               target={href.startsWith("mailto") ? undefined : "_blank"}
               rel="noopener noreferrer"
-              className="group flex items-center gap-3 text-sm text-[#9ca3af] transition-colors hover:text-[#e8d48b]"
+              className="group flex items-center gap-3 text-sm text-muted transition-colors hover:text-gold-light"
             >
-              <Icon className="h-4 w-4 text-[#c9a227]" aria-hidden />
+              <Icon className="h-4 w-4 text-gold" aria-hidden />
               <span className="hidden sm:inline">{text}</span>
               <span className="sm:hidden">{label}</span>
             </a>

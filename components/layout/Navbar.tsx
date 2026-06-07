@@ -41,7 +41,7 @@ export function Navbar() {
         >
           <Link
             href="#top"
-            className="font-script text-2xl text-gold transition-colors hover:text-[#e8d48b] sm:text-[1.65rem]"
+            className="font-script text-2xl text-gold transition-colors hover:text-gold-light sm:text-[1.65rem]"
           >
             {SITE.name.split(" ")[0]}
           </Link>
@@ -51,10 +51,10 @@ export function Navbar() {
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className="group relative inline-flex min-h-10 items-center px-4 text-sm font-medium text-[#f5f0e6]/80 transition-colors hover:text-[#e8d48b]"
+                  className="group relative inline-flex min-h-10 items-center px-4 text-sm font-medium text-cream/80 transition-colors hover:text-gold-light"
                 >
                   {link.label}
-                  <span className="absolute bottom-1 left-4 right-4 h-px origin-left scale-x-0 bg-[#c9a227] transition-transform duration-300 group-hover:scale-x-100" />
+                  <span className="absolute bottom-1 left-4 right-4 h-px origin-left scale-x-0 bg-gold transition-transform duration-300 group-hover:scale-x-100" />
                 </a>
               </li>
             ))}
@@ -68,7 +68,7 @@ export function Navbar() {
 
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[#c9a227]/20 text-[#e8d48b] md:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-gold/20 text-gold-light md:hidden"
             aria-expanded={open}
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => setOpen((v) => !v)}
@@ -96,7 +96,7 @@ export function Navbar() {
               onClick={() => setOpen(false)}
             />
             <motion.aside
-              className="fixed right-0 top-0 z-[70] flex h-dvh w-[min(20rem,88vw)] flex-col gap-6 border-l border-[#c9a227]/15 bg-[#0a0612]/98 p-6 md:hidden"
+              className="fixed right-0 top-0 z-[70] flex h-dvh w-[min(20rem,88vw)] flex-col gap-6 border-l border-gold/15 bg-[#0a0612]/98 p-6 md:hidden"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
@@ -107,7 +107,7 @@ export function Navbar() {
                   <li key={link.href}>
                     <a
                       href={link.href}
-                      className="block rounded-lg px-4 py-3 text-lg font-medium text-[#f5f0e6] hover:bg-[#c9a227]/10"
+                      className="block rounded-lg px-4 py-3 text-lg font-medium text-cream hover:bg-gold/10"
                       onClick={() => setOpen(false)}
                     >
                       {link.label}

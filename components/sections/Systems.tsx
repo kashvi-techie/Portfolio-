@@ -67,7 +67,7 @@ export function Systems() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <ScrollReveal>
           <p className="eyebrow">Engineering systems</p>
-          <h2 className="font-editorial mt-4 max-w-2xl text-[clamp(1.75rem,4vw,2.5rem)] font-semibold text-[#f5f0e6]">
+          <h2 className="font-editorial mt-4 max-w-2xl text-[clamp(1.75rem,4vw,2.5rem)] font-semibold text-cream">
             AI-native architecture that scales.
           </h2>
         </ScrollReveal>
@@ -82,24 +82,24 @@ export function Systems() {
                 {i < topNodes.length - 1 ? (
                   <div
                     data-arrow
-                    className="absolute -right-2 top-1/2 z-10 hidden h-px w-4 origin-left bg-gradient-to-r from-[#c9a227]/60 to-violet-500/40 lg:block"
+                    className="absolute -right-2 top-1/2 z-10 hidden h-px w-4 origin-left bg-gradient-to-r from-gold/60 to-violet-500/40 lg:block"
                     style={{ width: "calc(100% + 1rem)", left: "100%" }}
                     aria-hidden
                   />
                 ) : null}
                 <div
                   data-node
-                  className="rounded-xl border border-violet-500/25 bg-violet-950/30 px-4 py-5 text-center transition-colors hover:border-[#c9a227]/35"
+                  className="rounded-xl border border-violet-500/25 bg-violet-950/30 px-4 py-5 text-center transition-colors hover:border-gold/35"
                 >
-                  <p className="text-sm font-semibold text-[#f5f0e6]">{node.label}</p>
-                  <p className="mt-1 text-[0.7rem] text-[#9ca3af]">{node.sub}</p>
+                  <p className="text-sm font-semibold text-cream">{node.label}</p>
+                  <p className="mt-1 text-[0.7rem] text-muted">{node.sub}</p>
                 </div>
               </div>
             ))}
           </div>
 
           <div className="mt-6 flex justify-center lg:mt-8" aria-hidden>
-            <svg width="24" height="32" viewBox="0 0 24 32" className="text-[#c9a227]/50">
+            <svg width="24" height="32" viewBox="0 0 24 32" className="text-gold/50">
               <path
                 d="M12 0 L12 24 M6 18 L12 24 L18 18"
                 stroke="currentColor"
@@ -112,10 +112,10 @@ export function Systems() {
 
           <div
             data-node
-            className="mt-4 rounded-xl border border-[#c9a227]/20 bg-[#c9a227]/5 px-6 py-5 text-center lg:mt-6"
+            className="mt-4 rounded-xl border border-gold/20 bg-gold/5 px-6 py-5 text-center lg:mt-6"
           >
-            <p className="text-sm font-semibold text-[#e8d48b]">{bottom.label}</p>
-            <p className="mt-1 text-[0.7rem] text-[#9ca3af]">{bottom.sub}</p>
+            <p className="text-sm font-semibold text-gold-light">{bottom.label}</p>
+            <p className="mt-1 text-[0.7rem] text-muted">{bottom.sub}</p>
           </div>
 
           <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:hidden">
@@ -125,8 +125,8 @@ export function Systems() {
                 data-node
                 className="rounded-xl border border-violet-500/25 bg-violet-950/30 px-4 py-4"
               >
-                <p className="text-sm font-semibold text-[#f5f0e6]">{node.label}</p>
-                <p className="mt-1 text-xs text-[#9ca3af]">{node.sub}</p>
+                <p className="text-sm font-semibold text-cream">{node.label}</p>
+                <p className="mt-1 text-xs text-muted">{node.sub}</p>
               </div>
             ))}
           </div>

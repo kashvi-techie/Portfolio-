@@ -16,10 +16,10 @@ export function About() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <ScrollReveal>
           <p className="eyebrow">About</p>
-          <h2 className="font-editorial mt-4 max-w-3xl text-[clamp(1.75rem,4vw,2.75rem)] font-semibold leading-tight text-[#f5f0e6]">
+          <h2 className="font-editorial mt-4 max-w-3xl text-[clamp(1.75rem,4vw,2.75rem)] font-semibold leading-tight text-cream">
             I design, build and ship AI-native products.
           </h2>
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-[#9ca3af]">
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted">
             Designer who ships. Figma to live products — luxury UX to AI-native
             tools. I obsess over design systems, edge performance, and workflows
             where AI accelerates craft without sacrificing quality.
@@ -39,15 +39,15 @@ export function About() {
               <motion.article
                 key={card.title}
                 variants={staggerItem(reduceMotion)}
-                className="glass-card glow-border group rounded-2xl p-6 transition-all duration-500 hover:border-[#c9a227]/30 hover:shadow-[0_0_48px_-12px_rgba(201,162,39,0.2)]"
+                className="glass-card glow-border group rounded-2xl p-6 transition-all duration-500 hover:border-gold/30 hover:shadow-[0_0_48px_-12px_rgba(201,162,39,0.2)]"
               >
-                <div className="mb-4 inline-flex rounded-xl border border-violet-500/20 bg-violet-950/40 p-3 text-[#c9a227]">
+                <div className="mb-4 inline-flex rounded-xl border border-violet-500/20 bg-violet-950/40 p-3 text-gold">
                   <Icon className="h-5 w-5" aria-hidden />
                 </div>
-                <h3 className="font-editorial text-xl font-semibold text-[#f5f0e6]">
+                <h3 className="font-editorial text-xl font-semibold text-cream">
                   {card.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-[#9ca3af]">
+                <p className="mt-3 text-sm leading-relaxed text-muted">
                   {card.body}
                 </p>
               </motion.article>

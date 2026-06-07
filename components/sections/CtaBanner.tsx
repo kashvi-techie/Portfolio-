@@ -13,10 +13,10 @@ export function CtaBanner() {
         <ScrollReveal>
           <div className="glass-card glow-border relative overflow-hidden rounded-3xl px-8 py-12 sm:px-12 sm:py-16">
             <div className="relative z-10 max-w-xl">
-              <h2 className="font-editorial text-2xl font-semibold text-[#f5f0e6] sm:text-3xl">
+              <h2 className="font-editorial text-2xl font-semibold text-cream sm:text-3xl">
                 Open to exciting opportunities in AI-native product teams.
               </h2>
-              <p className="mt-4 text-sm text-[#9ca3af]">
+              <p className="mt-4 text-sm text-muted">
                 Let&apos;s build design systems, ship fast, and craft experiences
                 worthy of the best startups.
               </p>

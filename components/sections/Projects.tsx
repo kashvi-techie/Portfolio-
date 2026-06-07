@@ -18,7 +18,7 @@ export function Projects() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <ScrollReveal>
           <p className="eyebrow">Selected work</p>
-          <h2 className="font-editorial mt-4 max-w-2xl text-[clamp(1.75rem,4vw,2.5rem)] font-semibold text-[#f5f0e6]">
+          <h2 className="font-editorial mt-4 max-w-2xl text-[clamp(1.75rem,4vw,2.5rem)] font-semibold text-cream">
             Products that solve real problems with elegant systems.
           </h2>
         </ScrollReveal>
@@ -37,13 +37,13 @@ export function Projects() {
                 <ProjectPreview title={project.title} accent={project.accent} />
               </div>
               <div className="flex flex-1 flex-col p-5 sm:p-6">
-                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[#c9a227]/80">
+                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-gold/80">
                   {project.tagline}
                 </p>
-                <h3 className="font-editorial mt-2 text-2xl font-semibold text-[#f5f0e6]">
+                <h3 className="font-editorial mt-2 text-2xl font-semibold text-cream">
                   {project.title}
                 </h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-[#9ca3af]">
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">
                   {project.description}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
@@ -63,13 +63,13 @@ export function Projects() {
           <article className="glass-card glow-border overflow-hidden rounded-3xl">
             <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
               <div className="p-6 sm:p-10 lg:pr-0">
-                <span className="inline-flex rounded-full border border-[#c9a227]/30 bg-[#c9a227]/10 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-[#e8d48b]">
+                <span className="inline-flex rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-gold-light">
                   Live project
                 </span>
-                <h3 className="font-editorial mt-4 text-3xl font-semibold text-[#f5f0e6] sm:text-4xl">
+                <h3 className="font-editorial mt-4 text-3xl font-semibold text-cream sm:text-4xl">
                   {featured.title}
                 </h3>
-                <p className="mt-4 text-sm leading-relaxed text-[#9ca3af] sm:text-base">
+                <p className="mt-4 text-sm leading-relaxed text-muted sm:text-base">
                   {featured.description}
                 </p>
                 <ul className="mt-6 space-y-2">
@@ -81,9 +81,9 @@ export function Projects() {
                   ].map((item) => (
                     <li
                       key={item}
-                      className="flex items-start gap-2 text-sm text-[#9ca3af]"
+                      className="flex items-start gap-2 text-sm text-muted"
                     >
-                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#c9a227]" />
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
                       {item}
                     </li>
                   ))}
@@ -97,7 +97,7 @@ export function Projects() {
                   {featured.metrics.map((m) => (
                     <span
                       key={m}
-                      className="rounded-xl border border-[#c9a227]/20 bg-[#c9a227]/5 px-4 py-2 font-editorial text-sm font-semibold text-[#e8d48b]"
+                      className="rounded-xl border border-gold/20 bg-gold/5 px-4 py-2 font-editorial text-sm font-semibold text-gold-light"
                     >
                       {m}
                     </span>
@@ -109,7 +109,7 @@ export function Projects() {
                   </Button>
                 </div>
               </div>
-              <div className="relative min-h-[280px] p-4 sm:p-6 lg:pl-0">
+              <div className="relative min-h-70 p-4 sm:p-6 lg:pl-0">
                 <div className="absolute inset-4 rounded-3xl bg-violet-600/20 blur-3xl" />
                 <ProjectPreview
                   title={featured.title}

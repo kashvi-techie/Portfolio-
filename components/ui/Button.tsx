@@ -26,7 +26,7 @@ export function Button({
 }: ButtonProps) {
   const reduceMotion = useReducedMotion();
   const base =
-    "inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#c9a227]";
+    "inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold";
   const styles =
     variant === "gold"
       ? `${base} btn-gold ${className}`

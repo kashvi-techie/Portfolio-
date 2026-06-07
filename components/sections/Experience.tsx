@@ -12,14 +12,14 @@ export function Experience() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <ScrollReveal>
           <p className="eyebrow">Experience</p>
-          <h2 className="font-editorial mt-4 text-[clamp(1.75rem,4vw,2.5rem)] font-semibold text-[#f5f0e6]">
+          <h2 className="font-editorial mt-4 text-[clamp(1.75rem,4vw,2.5rem)] font-semibold text-cream">
             My journey so far.
           </h2>
         </ScrollReveal>
 
         <div className="relative mt-14">
           <div
-            className="absolute bottom-0 left-[4.5rem] top-0 w-px bg-gradient-to-b from-[#c9a227]/60 via-[#c9a227]/30 to-transparent sm:left-24"
+            className="absolute bottom-0 left-[4.5rem] top-0 w-px bg-gradient-to-b from-gold/60 via-gold/30 to-transparent sm:left-24"
             aria-hidden
           />
 
@@ -38,28 +38,28 @@ export function Experience() {
                     {item.year}
                   </span>
                   <span
-                    className="absolute left-[4.25rem] top-2 hidden h-3 w-3 rounded-full border-2 border-[#c9a227] bg-[#0a0612] shadow-[0_0_16px_rgba(201,162,39,0.6)] sm:left-[5.65rem] sm:block"
+                    className="absolute left-[4.25rem] top-2 hidden h-3 w-3 rounded-full border-2 border-gold bg-[#0a0612] shadow-[0_0_16px_rgba(201,162,39,0.6)] sm:left-[5.65rem] sm:block"
                     aria-hidden
                   />
                 </div>
 
                 <article className="glass-card glow-border rounded-2xl p-6 sm:ml-4">
                   <div className="flex flex-wrap items-center gap-3">
-                    <h3 className="font-editorial text-xl font-semibold text-[#f5f0e6]">
+                    <h3 className="font-editorial text-xl font-semibold text-cream">
                       {item.role} @ {item.company}
                     </h3>
                     <span className="rounded-full border border-violet-500/30 bg-violet-950/50 px-2.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.15em] text-violet-300">
                       {item.type}
                     </span>
                   </div>
-                  <p className="mt-1 text-sm text-[#9ca3af]">{item.period}</p>
+                  <p className="mt-1 text-sm text-muted">{item.period}</p>
                   <ul className="mt-4 space-y-2">
                     {item.bullets.map((b) => (
                       <li
                         key={b}
-                        className="flex items-start gap-2 text-sm leading-relaxed text-[#9ca3af]"
+                        className="flex items-start gap-2 text-sm leading-relaxed text-muted"
                       >
-                        <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#c9a227]" />
+                        <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-gold" />
                         {b}
                       </li>
                     ))}

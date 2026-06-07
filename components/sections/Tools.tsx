@@ -13,7 +13,7 @@ export function Tools() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <ScrollReveal>
           <p className="eyebrow">Tools & ecosystem</p>
-          <h2 className="font-editorial mt-4 text-[clamp(1.75rem,4vw,2.25rem)] font-semibold text-[#f5f0e6]">
+          <h2 className="font-editorial mt-4 text-[clamp(1.75rem,4vw,2.25rem)] font-semibold text-cream">
             The tools I craft with.
           </h2>
         </ScrollReveal>
@@ -29,9 +29,9 @@ export function Tools() {
             <motion.div
               key={tool.label}
               variants={staggerItem(reduceMotion)}
-              className="glass-card glow-border group flex flex-col items-center justify-center gap-3 rounded-2xl px-4 py-8 transition-all duration-300 hover:border-[#c9a227]/35 hover:shadow-[0_0_32px_-8px_rgba(201,162,39,0.25)]"
+              className="glass-card glow-border group flex flex-col items-center justify-center gap-3 rounded-2xl px-4 py-8 transition-all duration-300 hover:border-gold/35 hover:shadow-[0_0_32px_-8px_rgba(201,162,39,0.25)]"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#c9a227]/15 bg-black/40">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gold/15 bg-black/40">
                 <img
                   src={tool.logo}
                   alt={tool.label}
@@ -45,7 +45,7 @@ export function Tools() {
                   }}
                 />
               </div>
-              <span className="text-center text-xs font-semibold text-[#e8d48b]/90">
+              <span className="text-center text-xs font-semibold text-gold-light/90">
                 {tool.label}
               </span>
             </motion.div>
