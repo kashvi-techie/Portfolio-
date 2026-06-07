@@ -6,17 +6,21 @@ import { SITE } from "@/lib/data";
 import { motion, useReducedMotion } from "framer-motion";
 import { Github, Linkedin, Mail } from "lucide-react";
 import { useState } from "react";
-import { init, send } from "@emailjs/browser";
+import { sendForm } from "@emailjs/browser";
 
-const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "YOUR_SERVICE_ID";
-const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "YOUR_TEMPLATE_ID";
-const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "YOUR_PUBLIC_KEY";
-const EMAILJS_CONFIGURED =
-  ![EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY].some((value) =>
-    value.startsWith("YOUR_")
-  );
+const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID?.trim();
+const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID?.trim();
+const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY?.trim();
 
-init(EMAILJS_PUBLIC_KEY);
+// Foolproof configuration check
+const EMAILJS_CONFIGURED = !!(
+  EMAILJS_SERVICE_ID &&
+  EMAILJS_TEMPLATE_ID &&
+  EMAILJS_PUBLIC_KEY &&
+  !EMAILJS_SERVICE_ID.includes("YOUR_") &&
+  !EMAILJS_TEMPLATE_ID.includes("YOUR_") &&
+  !EMAILJS_PUBLIC_KEY.includes("YOUR_")
+);
 
 export function Contact() {
   const reduceMotion = useReducedMotion();
@@ -24,32 +28,44 @@ export function Contact() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    if (!EMAILJS_CONFIGURED) {
+      console.error("EmailJS environment variables are not configured correctly.");
+      setStatus("error");
+      return;
+    }
+
     const form = e.currentTarget;
     const formData = new FormData(form);
     const name = String(formData.get("name") || "");
     const email = String(formData.get("email") || "");
     const message = String(formData.get("message") || "");
 
-    if (!EMAILJS_CONFIGURED) {
-      console.error("EmailJS environment variables are not configured.");
-      setStatus("error");
-      return;
-    }
-
     setStatus("sending");
 
-    send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-      from_name: name,
-      from_email: email,
-      message,
-      reply_to: email,
-    })
-      .then(() => {
+    // Send the HTML form element directly so EmailJS maps input `name` attributes to template variables.
+    // Using sendForm with the public key as the fourth argument.
+    sendForm(
+      EMAILJS_SERVICE_ID!,
+      EMAILJS_TEMPLATE_ID!,
+      form,
+      EMAILJS_PUBLIC_KEY!
+    )
+      .then((response) => {
         form.reset();
         setStatus("sent");
+        console.log("EmailJS sent:", response);
       })
       .catch((error) => {
-        console.error("EmailJS error:", error);
+        // Better error visibility
+        try {
+          console.error("EmailJS error details:", JSON.stringify(error));
+        } catch (e) {
+          console.error("EmailJS error details:", error);
+        }
+        if (error && (error.text || error.status)) {
+          console.error("EmailJS status:", error.status, error.text);
+        }
         setStatus("error");
       });
   };
@@ -135,8 +151,8 @@ export function Contact() {
                   id="message"
                   name="message"
                   required
-                  rows={4}
                   className="w-full resize-none rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-[#f5f0e6] outline-none transition focus:border-[#c9a227]/50 focus:ring-1 focus:ring-[#c9a227]/30"
+                  rows={4}
                   placeholder="Tell me about your project..."
                 />
               </div>
@@ -155,8 +171,7 @@ export function Contact() {
               )}
               {status === "error" && (
                 <p className="mt-3 text-sm text-[#f59e0b]">
-                  EmailJS is not configured. Copy <code>.env.local.example</code> to{' '}
-                  <code>.env.local</code> and set your EmailJS IDs.
+                  Something went wrong. Please check your console logs or verify your <code>.env.local</code> setup.
                 </p>
               )}
               {!EMAILJS_CONFIGURED && status === "idle" && (
