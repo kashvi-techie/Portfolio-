@@ -25,7 +25,6 @@ const EMAILJS_CONFIGURED = !!(
 export function Contact() {
   const reduceMotion = useReducedMotion();
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -44,45 +43,24 @@ export function Contact() {
 
     setStatus("sending");
 
-    // Pass public key as the 4th arg (string) — this matches @emailjs/browser send signature
-    send(
-      EMAILJS_SERVICE_ID!,
-      EMAILJS_TEMPLATE_ID!,
-      {
-        from_name: name,
-        from_email: email,
-        message: message,
-        reply_to: email,
-      },
-      EMAILJS_PUBLIC_KEY!
-    )
+    // Pass public key directly inside the options object to avoid init initialization race conditions
+        send(
+          EMAILJS_SERVICE_ID!,
+          EMAILJS_TEMPLATE_ID!,
+          {
+            from_name: name,
+            from_email: email,
+            message: message,
+            reply_to: email,
+          },
+          EMAILJS_PUBLIC_KEY!
+        )
       .then(() => {
         form.reset();
         setStatus("sent");
-        setErrorMessage(null);
       })
       .catch((error) => {
-        // Normalize error info for easier debugging
-        let detail = "";
-        try {
-          if (error && typeof error === "object") {
-            // EmailJS HTTP errors often come back as { status, text }
-            // @ts-ignore
-            if ("status" in error && "text" in error) {
-              // @ts-ignore
-              detail = `status ${error.status} - ${error.text}`;
-            } else {
-              detail = JSON.stringify(error);
-            }
-          } else {
-            detail = String(error);
-          }
-        } catch (e) {
-          detail = String(error);
-        }
-
-        console.error("EmailJS error details:", detail);
-        setErrorMessage(detail);
+        console.error("EmailJS error details:", error);
         setStatus("error");
       });
   };
