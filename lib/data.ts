@@ -2,7 +2,7 @@ export const SITE = {
   name: "Kashvi Pundir",
   title: "AI-Native Product Designer & Engineer",
   email: "kashvipcm@gmail.com",
-  github: "https://github.com/kashvi67631",
+  github: "https://github.com/kashvi-techie",
   linkedin: "https://www.linkedin.com/in/kashvi-pundir-3502183b1",
   resume: "https://drive.google.com/file/d/1xA5oilQ8cKMq1D1ZkWESv2Hbu63ROQZF/view?usp=sharing",
 } as const;
