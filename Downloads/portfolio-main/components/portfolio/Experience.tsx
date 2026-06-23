@@ -50,7 +50,7 @@ export default function Experience() {
       id="experience"
       ref={sectionRef}
       style={{
-        background: '#0B1612',
+        background: '#0E1B15',
         padding: '7rem 2rem',
         position: 'relative',
         overflow: 'hidden',
@@ -69,15 +69,15 @@ export default function Experience() {
         }}
       >
         <img
-          src="https://images.pexels.com/photos/5731866/pexels-photo-5731866.jpeg?auto=compress&cs=tinysrgb&w=800"
+          src="/images/lotus/lotus-open.jpg"
           alt=""
           aria-hidden="true"
           style={{
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            opacity: 0.12,
-            filter: 'saturate(0.2) brightness(0.5)',
+            opacity: 0.2,
+            filter: 'saturate(0.6) brightness(0.7)',
           }}
         />
         <div
@@ -85,7 +85,7 @@ export default function Experience() {
             position: 'absolute',
             inset: 0,
             background:
-              'linear-gradient(to right, #0B1612 0%, rgba(11, 22, 18, 0.4) 60%, transparent 100%)',
+              'linear-gradient(to right, #0E1B15 0%, rgba(14, 27, 21, 0.4) 60%, transparent 100%)',
           }}
         />
       </div>
@@ -118,7 +118,7 @@ export default function Experience() {
                 fontFamily: 'Cormorant Garamond, serif',
                 fontSize: 'clamp(1.8rem, 3vw, 2.8rem)',
                 fontWeight: 400,
-                color: '#F8F3EB',
+                color: '#FBF7F0',
                 lineHeight: 1.2,
                 marginBottom: '3rem',
               }}
@@ -137,7 +137,7 @@ export default function Experience() {
                   bottom: 0,
                   width: '1px',
                   background:
-                    'linear-gradient(to bottom, rgba(196, 154, 60, 0.4), rgba(196, 154, 60, 0.1))',
+                    'linear-gradient(to bottom, rgba(227, 188, 94, 0.4), rgba(227, 188, 94, 0.1))',
                 }}
               />
 
@@ -161,8 +161,8 @@ export default function Experience() {
                       width: '9px',
                       height: '9px',
                       borderRadius: '50%',
-                      border: '1px solid #C49A3C',
-                      background: 'rgba(196, 154, 60, 0.15)',
+                      border: '1px solid #E3BC5E',
+                      background: 'rgba(227, 188, 94, 0.15)',
                     }}
                   />
 
@@ -182,7 +182,7 @@ export default function Experience() {
                           fontFamily: 'Cormorant Garamond, serif',
                           fontSize: '1.1rem',
                           fontWeight: 500,
-                          color: '#F8F3EB',
+                          color: '#FBF7F0',
                           lineHeight: 1.2,
                         }}
                       >
@@ -192,7 +192,7 @@ export default function Experience() {
                         style={{
                           fontFamily: 'Inter, sans-serif',
                           fontSize: '0.72rem',
-                          color: '#C49A3C',
+                          color: '#E3BC5E',
                           marginTop: '0.15rem',
                         }}
                       >
@@ -204,7 +204,7 @@ export default function Experience() {
                         style={{
                           fontFamily: 'Inter, sans-serif',
                           fontSize: '0.68rem',
-                          color: 'rgba(248, 243, 235, 0.4)',
+                          color: 'rgba(251, 247, 240, 0.4)',
                         }}
                       >
                         {exp.period}
@@ -213,7 +213,7 @@ export default function Experience() {
                         style={{
                           fontFamily: 'Inter, sans-serif',
                           fontSize: '0.62rem',
-                          color: 'rgba(248, 243, 235, 0.3)',
+                          color: 'rgba(251, 247, 240, 0.3)',
                           letterSpacing: '0.1em',
                           textTransform: 'uppercase',
                         }}
@@ -236,7 +236,7 @@ export default function Experience() {
                       >
                         <span
                           style={{
-                            color: 'rgba(196, 154, 60, 0.5)',
+                            color: 'rgba(227, 188, 94, 0.5)',
                             fontSize: '0.6rem',
                             marginTop: '0.3rem',
                             flexShrink: 0,
@@ -249,7 +249,7 @@ export default function Experience() {
                             fontFamily: 'Inter, sans-serif',
                             fontSize: '0.75rem',
                             lineHeight: 1.65,
-                            color: 'rgba(248, 243, 235, 0.45)',
+                            color: 'rgba(251, 247, 240, 0.45)',
                             fontWeight: 300,
                           }}
                         >
@@ -273,7 +273,7 @@ export default function Experience() {
                   fontSize: '0.6rem',
                   letterSpacing: '0.2em',
                   textTransform: 'uppercase',
-                  color: 'rgba(196, 154, 60, 0.6)',
+                  color: 'rgba(227, 188, 94, 0.6)',
                   marginBottom: '0.75rem',
                 }}
               >
@@ -284,7 +284,7 @@ export default function Experience() {
                   fontFamily: 'Cormorant Garamond, serif',
                   fontSize: '1rem',
                   fontWeight: 500,
-                  color: '#F8F3EB',
+                  color: '#FBF7F0',
                   marginBottom: '0.25rem',
                 }}
               >
@@ -294,7 +294,7 @@ export default function Experience() {
                 style={{
                   fontFamily: 'Inter, sans-serif',
                   fontSize: '0.72rem',
-                  color: 'rgba(248, 243, 235, 0.4)',
+                  color: 'rgba(251, 247, 240, 0.4)',
                 }}
               >
                 GLA University — In Progress
@@ -303,14 +303,14 @@ export default function Experience() {
                 style={{
                   marginTop: '0.75rem',
                   paddingTop: '0.75rem',
-                  borderTop: '1px solid rgba(196, 154, 60, 0.08)',
+                  borderTop: '1px solid rgba(227, 188, 94, 0.08)',
                 }}
               >
                 <p
                   style={{
                     fontFamily: 'Inter, sans-serif',
                     fontSize: '0.72rem',
-                    color: 'rgba(248, 243, 235, 0.4)',
+                    color: 'rgba(251, 247, 240, 0.4)',
                   }}
                 >
                   Google AI Essentials — Certified via Coursera
@@ -334,7 +334,7 @@ export default function Experience() {
                   fontFamily: 'Cormorant Garamond, serif',
                   fontSize: '5rem',
                   lineHeight: 0.5,
-                  color: 'rgba(196, 154, 60, 0.25)',
+                  color: 'rgba(227, 188, 94, 0.25)',
                   marginBottom: '1.5rem',
                   userSelect: 'none',
                 }}
@@ -347,7 +347,7 @@ export default function Experience() {
                   fontSize: 'clamp(1.35rem, 2.5vw, 1.85rem)',
                   fontWeight: 400,
                   lineHeight: 1.55,
-                  color: '#F8F3EB',
+                  color: '#FBF7F0',
                   fontStyle: 'italic',
                   marginBottom: '2rem',
                 }}
@@ -359,7 +359,7 @@ export default function Experience() {
                   fontFamily: 'Cormorant Garamond, serif',
                   fontSize: '1.1rem',
                   fontStyle: 'italic',
-                  color: '#C49A3C',
+                  color: '#E3BC5E',
                   letterSpacing: '0.05em',
                 }}
               >
@@ -367,18 +367,18 @@ export default function Experience() {
               </p>
 
               {/* Lotus decoration */}
-              <div style={{ marginTop: '2.5rem', opacity: 0.25 }}>
+              <div style={{ marginTop: '2.5rem', opacity: 0.6 }}>
                 <img
-                  src="https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=400"
+                  src="/images/lotus/lotus-dark.jpg"
                   alt=""
                   aria-hidden="true"
                   style={{
-                    width: '180px',
-                    height: '120px',
+                    width: '200px',
+                    height: '130px',
                     objectFit: 'cover',
-                    borderRadius: '4px',
-                    filter: 'saturate(0.2) brightness(0.6)',
-                    border: '1px solid rgba(196, 154, 60, 0.15)',
+                    borderRadius: '8px',
+                    filter: 'saturate(1) brightness(0.95)',
+                    border: '1px solid rgba(233, 196, 106, 0.25)',
                   }}
                 />
               </div>

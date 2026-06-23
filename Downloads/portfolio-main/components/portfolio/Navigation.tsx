@@ -44,10 +44,10 @@ export default function Navigation() {
           zIndex: 100,
           transition: 'all 0.5s cubic-bezier(0.23, 1, 0.32, 1)',
           padding: scrolled ? '0.75rem 2rem' : '1.5rem 2rem',
-          background: scrolled ? 'rgba(11, 22, 18, 0.92)' : 'transparent',
+          background: scrolled ? 'rgba(14, 27, 21, 0.92)' : 'transparent',
           backdropFilter: scrolled ? 'blur(20px)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(196, 154, 60, 0.1)' : 'none',
+          borderBottom: scrolled ? '1px solid rgba(227, 188, 94, 0.1)' : 'none',
         }}
       >
         <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -60,7 +60,7 @@ export default function Navigation() {
               fontFamily: 'Cormorant Garamond, serif',
               fontSize: '1.5rem',
               fontWeight: 500,
-              color: '#F8F3EB',
+              color: '#FBF7F0',
               letterSpacing: '0.05em',
               display: 'flex',
               alignItems: 'center',
@@ -74,7 +74,7 @@ export default function Navigation() {
               width: '5px',
               height: '5px',
               borderRadius: '50%',
-              background: '#C49A3C',
+              background: '#E3BC5E',
               marginBottom: '8px',
               animation: 'softPulse 3s ease-in-out infinite',
             }} />
@@ -87,7 +87,7 @@ export default function Navigation() {
             aria-expanded={menuOpen}
             style={{
               background: 'none',
-              border: '1px solid rgba(196, 154, 60, 0.3)',
+              border: '1px solid rgba(227, 188, 94, 0.3)',
               borderRadius: '8px',
               cursor: 'pointer',
               padding: '0.55rem 0.75rem',
@@ -97,10 +97,10 @@ export default function Navigation() {
               transition: 'border-color 0.3s ease',
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(196, 154, 60, 0.7)';
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(227, 188, 94, 0.7)';
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(196, 154, 60, 0.3)';
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(227, 188, 94, 0.3)';
             }}
           >
             {[0, 1, 2].map((i) => (
@@ -110,7 +110,7 @@ export default function Navigation() {
                   display: 'block',
                   width: '22px',
                   height: '1.5px',
-                  background: '#C49A3C',
+                  background: '#E3BC5E',
                   transition: 'all 0.35s cubic-bezier(0.23, 1, 0.32, 1)',
                   transformOrigin: 'center',
                   transform:
@@ -152,16 +152,16 @@ export default function Navigation() {
             transform: 'translate(-50%, -50%)',
             width: '60vmin', height: '60vmin',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(196, 154, 60, 0.04) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(227, 188, 94, 0.04) 0%, transparent 70%)',
           }} />
           <svg
             viewBox="0 0 200 200"
             fill="none"
             style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '400px', opacity: 0.04 }}
           >
-            <path d="M100 10c0 0-40 30-40 70s40 80 40 80 40-40 40-80S100 10 100 10z" stroke="#C49A3C" strokeWidth="1" />
-            <path d="M100 30c0 0-25 22-25 50s25 60 25 60 25-32 25-60S100 30 100 30z" stroke="#C49A3C" strokeWidth="1" />
-            <path d="M50 80c-25 0-40 25-40 25s20 20 40 12M150 80c25 0 40 25 40 25s-20 20-40 12" stroke="#C49A3C" strokeWidth="1" />
+            <path d="M100 10c0 0-40 30-40 70s40 80 40 80 40-40 40-80S100 10 100 10z" stroke="#E3BC5E" strokeWidth="1" />
+            <path d="M100 30c0 0-25 22-25 50s25 60 25 60 25-32 25-60S100 30 100 30z" stroke="#E3BC5E" strokeWidth="1" />
+            <path d="M50 80c-25 0-40 25-40 25s20 20 40 12M150 80c25 0 40 25 40 25s-20 20-40 12" stroke="#E3BC5E" strokeWidth="1" />
           </svg>
         </div>
 
@@ -176,7 +176,7 @@ export default function Navigation() {
                 fontFamily: 'Cormorant Garamond, serif',
                 fontSize: 'clamp(2.2rem, 5vw, 4rem)',
                 fontWeight: 300,
-                color: '#F8F3EB',
+                color: '#FBF7F0',
                 textDecoration: 'none',
                 letterSpacing: '0.04em',
                 lineHeight: 1.3,
@@ -187,12 +187,12 @@ export default function Navigation() {
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.color = '#C49A3C';
+                el.style.color = '#E3BC5E';
                 el.style.letterSpacing = '0.12em';
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.color = '#F8F3EB';
+                el.style.color = '#FBF7F0';
                 el.style.letterSpacing = '0.04em';
               }}
             >
@@ -213,19 +213,19 @@ export default function Navigation() {
             transition: 'opacity 0.5s ease 0.35s',
           }}
         >
-          <a href="mailto:kashvipcm@gmail.com" style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', color: '#C49A3C', textDecoration: 'none', letterSpacing: '0.1em' }}>
+          <a href="mailto:kashvipcm@gmail.com" style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', color: '#E3BC5E', textDecoration: 'none', letterSpacing: '0.1em' }}>
             kashvipcm@gmail.com
           </a>
-          <div style={{ width: '1px', height: '16px', background: 'rgba(196, 154, 60, 0.3)' }} />
-          <a href="https://github.com/kashvi-techie" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', color: 'rgba(248, 243, 235, 0.4)', textDecoration: 'none', letterSpacing: '0.1em', transition: 'color 0.3s ease' }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#C49A3C'; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(248, 243, 235, 0.4)'; }}
+          <div style={{ width: '1px', height: '16px', background: 'rgba(227, 188, 94, 0.3)' }} />
+          <a href="https://github.com/kashvi-techie" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', color: 'rgba(251, 247, 240, 0.4)', textDecoration: 'none', letterSpacing: '0.1em', transition: 'color 0.3s ease' }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#E3BC5E'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(251, 247, 240, 0.4)'; }}
           >
             GitHub
           </a>
-          <a href="https://www.linkedin.com/in/kashvi-pundir-3502183b1" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', color: 'rgba(248, 243, 235, 0.4)', textDecoration: 'none', letterSpacing: '0.1em', transition: 'color 0.3s ease' }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#C49A3C'; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(248, 243, 235, 0.4)'; }}
+          <a href="https://www.linkedin.com/in/kashvi-pundir-3502183b1" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', color: 'rgba(251, 247, 240, 0.4)', textDecoration: 'none', letterSpacing: '0.1em', transition: 'color 0.3s ease' }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#E3BC5E'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'rgba(251, 247, 240, 0.4)'; }}
           >
             LinkedIn
           </a>

@@ -29,7 +29,7 @@ export default function Contact() {
       style={{
         position: 'relative',
         overflow: 'hidden',
-        background: '#0B1612',
+        background: '#0E1B15',
       }}
     >
       {/* Main contact hero area */}
@@ -52,23 +52,23 @@ export default function Contact() {
             zIndex: 0,
           }}
         >
-          {/* Primary lotus pond — more visible */}
+          {/* Primary lotus pond — real lotus, more visible */}
           <img
-            src="https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=1400"
+            src="/images/lotus/lotus-open.jpg"
             alt=""
             aria-hidden="true"
             style={{
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              objectPosition: 'center 60%',
-              opacity: 0.32,
-              filter: 'saturate(0.4) brightness(0.45)',
+              objectPosition: 'center 55%',
+              opacity: 0.38,
+              filter: 'saturate(0.7) brightness(0.6)',
             }}
           />
           {/* Second lotus layer for depth */}
           <img
-            src="https://images.pexels.com/photos/1477320/pexels-photo-1477320.jpeg?auto=compress&cs=tinysrgb&w=800"
+            src="/images/lotus/lotus-dark.jpg"
             alt=""
             aria-hidden="true"
             style={{
@@ -77,24 +77,24 @@ export default function Contact() {
               left: 0,
               right: 0,
               width: '100%',
-              height: '55%',
+              height: '60%',
               objectFit: 'cover',
-              objectPosition: 'center top',
-              opacity: 0.18,
-              filter: 'saturate(0.3) brightness(0.5)',
+              objectPosition: 'center center',
+              opacity: 0.5,
+              filter: 'saturate(1.05) brightness(1)',
               mixBlendMode: 'screen',
             }}
           />
           <div
             style={{
               position: 'absolute', inset: 0,
-              background: 'radial-gradient(ellipse 70% 50% at 50% 60%, rgba(15, 76, 92, 0.15) 0%, transparent 65%)',
+              background: 'radial-gradient(ellipse 70% 50% at 50% 60%, rgba(31, 122, 132, 0.15) 0%, transparent 65%)',
             }}
           />
           <div
             style={{
               position: 'absolute', inset: 0,
-              background: 'linear-gradient(to bottom, #0B1612 0%, rgba(11, 22, 18, 0.25) 30%, rgba(11, 22, 18, 0.2) 65%, #0B1612 100%)',
+              background: 'linear-gradient(to bottom, #0E1B15 0%, rgba(14, 27, 21, 0.25) 30%, rgba(14, 27, 21, 0.2) 65%, #0E1B15 100%)',
             }}
           />
 
@@ -110,7 +110,7 @@ export default function Contact() {
                 width: `${80 + i * 60}px`,
                 height: `${40 + i * 30}px`,
                 borderRadius: '50%',
-                border: '1px solid rgba(196, 154, 60, 0.08)',
+                border: '1px solid rgba(227, 188, 94, 0.08)',
                 animation: `ripple ${3 + i * 1.5}s ease-out ${i * 1.5}s infinite`,
                 pointerEvents: 'none',
               }}
@@ -129,25 +129,25 @@ export default function Contact() {
             >
               <path
                 d="M24 6c0 0-10 8-10 18s10 16 10 16 10-6 10-16S24 6 24 6z"
-                stroke="#C49A3C"
+                stroke="#E3BC5E"
                 strokeWidth="1"
-                fill="rgba(196, 154, 60, 0.06)"
+                fill="rgba(227, 188, 94, 0.06)"
               />
               <path
                 d="M24 10c0 0-6 6-6 14s6 12 6 12 6-4 6-12-6-14-6-14z"
-                stroke="#C49A3C"
+                stroke="#E3BC5E"
                 strokeWidth="0.8"
-                fill="rgba(196, 154, 60, 0.04)"
+                fill="rgba(227, 188, 94, 0.04)"
               />
               <path
                 d="M14 24c-6 0-10 6-10 6s6 6 12 3"
-                stroke="#C49A3C"
+                stroke="#E3BC5E"
                 strokeWidth="0.8"
                 fill="none"
               />
               <path
                 d="M34 24c6 0 10 6 10 6s-6 6-12 3"
-                stroke="#C49A3C"
+                stroke="#E3BC5E"
                 strokeWidth="0.8"
                 fill="none"
               />
@@ -160,14 +160,14 @@ export default function Contact() {
               fontFamily: 'Cormorant Garamond, serif',
               fontSize: 'clamp(2.2rem, 5vw, 4rem)',
               fontWeight: 400,
-              color: '#F8F3EB',
+              color: '#FBF7F0',
               lineHeight: 1.2,
               marginBottom: '1.5rem',
               transitionDelay: '0.1s',
             }}
           >
             Let&apos;s create something{' '}
-            <em style={{ fontStyle: 'italic', color: '#C49A3C' }}>meaningful</em>{' '}
+            <em style={{ fontStyle: 'italic', color: '#E3BC5E' }}>meaningful</em>{' '}
             together.
           </h2>
 
@@ -177,7 +177,7 @@ export default function Contact() {
               fontFamily: 'Inter, sans-serif',
               fontSize: '0.875rem',
               lineHeight: 1.7,
-              color: 'rgba(248, 243, 235, 0.45)',
+              color: 'rgba(251, 247, 240, 0.45)',
               fontWeight: 300,
               marginBottom: '3rem',
               transitionDelay: '0.2s',
@@ -203,26 +203,26 @@ export default function Contact() {
                 alignItems: 'center',
                 gap: '0.6rem',
                 padding: '0.9rem 2rem',
-                background: 'rgba(196, 154, 60, 0.12)',
-                border: '1px solid rgba(196, 154, 60, 0.4)',
+                background: 'rgba(227, 188, 94, 0.12)',
+                border: '1px solid rgba(227, 188, 94, 0.4)',
                 borderRadius: '9999px',
                 fontFamily: 'Inter, sans-serif',
                 fontSize: '0.78rem',
                 letterSpacing: '0.1em',
-                color: '#E0C472',
+                color: '#F6E3AD',
                 textDecoration: 'none',
                 transition: 'all 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.background = 'rgba(196, 154, 60, 0.22)';
-                el.style.borderColor = 'rgba(196, 154, 60, 0.7)';
+                el.style.background = 'rgba(227, 188, 94, 0.22)';
+                el.style.borderColor = 'rgba(227, 188, 94, 0.7)';
                 el.style.transform = 'translateY(-2px)';
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.background = 'rgba(196, 154, 60, 0.12)';
-                el.style.borderColor = 'rgba(196, 154, 60, 0.4)';
+                el.style.background = 'rgba(227, 188, 94, 0.12)';
+                el.style.borderColor = 'rgba(227, 188, 94, 0.4)';
                 el.style.transform = 'translateY(0)';
               }}
             >
@@ -239,24 +239,24 @@ export default function Contact() {
                 gap: '0.6rem',
                 padding: '0.9rem 1.75rem',
                 background: 'transparent',
-                border: '1px solid rgba(248, 243, 235, 0.15)',
+                border: '1px solid rgba(251, 247, 240, 0.15)',
                 borderRadius: '9999px',
                 fontFamily: 'Inter, sans-serif',
                 fontSize: '0.78rem',
                 letterSpacing: '0.1em',
-                color: 'rgba(248, 243, 235, 0.5)',
+                color: 'rgba(251, 247, 240, 0.5)',
                 textDecoration: 'none',
                 transition: 'all 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.borderColor = 'rgba(196, 154, 60, 0.3)';
-                el.style.color = '#C49A3C';
+                el.style.borderColor = 'rgba(227, 188, 94, 0.3)';
+                el.style.color = '#E3BC5E';
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.borderColor = 'rgba(248, 243, 235, 0.15)';
-                el.style.color = 'rgba(248, 243, 235, 0.5)';
+                el.style.borderColor = 'rgba(251, 247, 240, 0.15)';
+                el.style.color = 'rgba(251, 247, 240, 0.5)';
               }}
             >
               LinkedIn ↗
@@ -276,11 +276,11 @@ export default function Contact() {
         }}
       >
         {[
-          'https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=400',
-          'https://images.pexels.com/photos/1477320/pexels-photo-1477320.jpeg?auto=compress&cs=tinysrgb&w=400',
-          'https://images.pexels.com/photos/1834399/pexels-photo-1834399.jpeg?auto=compress&cs=tinysrgb&w=400',
-          'https://images.pexels.com/photos/2113566/pexels-photo-2113566.jpeg?auto=compress&cs=tinysrgb&w=400',
-          'https://images.pexels.com/photos/5731866/pexels-photo-5731866.jpeg?auto=compress&cs=tinysrgb&w=400',
+          '/images/lotus/lotus-open.jpg',
+          '/images/lotus/lotus-dark.jpg',
+          '/images/lotus/lotus-bud.jpg',
+          '/images/lotus/lotus-leaf.jpg',
+          '/images/lotus/lotus-open.jpg',
         ].map((src, i) => (
           <div
             key={i}
@@ -301,24 +301,24 @@ export default function Contact() {
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
-                filter: 'saturate(0.25) brightness(0.45)',
+                filter: 'saturate(0.75) brightness(0.72)',
                 transition: 'filter 0.6s ease, transform 0.6s ease',
               }}
               onMouseEnter={(e) => {
                 const img = e.currentTarget as HTMLImageElement;
-                img.style.filter = 'saturate(0.5) brightness(0.55)';
+                img.style.filter = 'saturate(1) brightness(0.95)';
                 img.style.transform = 'scale(1.05)';
               }}
               onMouseLeave={(e) => {
                 const img = e.currentTarget as HTMLImageElement;
-                img.style.filter = 'saturate(0.25) brightness(0.45)';
+                img.style.filter = 'saturate(0.75) brightness(0.72)';
                 img.style.transform = 'scale(1)';
               }}
             />
             {/* Gold overlay at bottom */}
             <div style={{
               position: 'absolute', inset: 0,
-              background: 'linear-gradient(to top, rgba(11,22,18,0.8) 0%, transparent 50%)',
+              background: 'linear-gradient(to top, rgba(14,27,21,0.8) 0%, transparent 50%)',
               pointerEvents: 'none',
             }} />
           </div>
@@ -326,7 +326,7 @@ export default function Contact() {
         {/* Top fade */}
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, height: '60px',
-          background: 'linear-gradient(to bottom, #0B1612, transparent)',
+          background: 'linear-gradient(to bottom, #0E1B15, transparent)',
           pointerEvents: 'none', zIndex: 1,
         }} />
       </div>
@@ -334,9 +334,9 @@ export default function Contact() {
       {/* Bottom footer bar */}
       <div
         style={{
-          borderTop: '1px solid rgba(196, 154, 60, 0.1)',
+          borderTop: '1px solid rgba(227, 188, 94, 0.1)',
           padding: '1.75rem 2rem',
-          background: 'rgba(11, 22, 18, 0.8)',
+          background: 'rgba(14, 27, 21, 0.8)',
         }}
       >
         <div
@@ -355,7 +355,7 @@ export default function Contact() {
             style={{
               fontFamily: 'Inter, sans-serif',
               fontSize: '0.68rem',
-              color: 'rgba(248, 243, 235, 0.3)',
+              color: 'rgba(251, 247, 240, 0.3)',
               letterSpacing: '0.05em',
             }}
           >
@@ -372,10 +372,10 @@ export default function Contact() {
             }}
           >
             {[
-              { label: 'kashvipcm@gmail.com', href: 'mailto:kashvipcm@gmail.com', icon: '✉' },
-              { label: 'Greater Noida, India', href: '#', icon: '◎' },
-              { label: 'GitHub', href: 'https://github.com/kashvi-techie', icon: '⬡' },
-              { label: 'LinkedIn', href: 'https://www.linkedin.com/in/kashvi-pundir-3502183b1', icon: '◈' },
+              { label: 'kashvipcm@gmail.com', href: 'mailto:kashvipcm@gmail.com', icon: 'M3 5h18v14H3z M3 6l9 7 9-7', fillIcon: false },
+              { label: 'Greater Noida, India', href: 'https://maps.google.com/?q=Greater+Noida,+India', icon: 'M12 22s7-7.6 7-13a7 7 0 1 0-14 0c0 5.4 7 13 7 13z M12 9a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z', fillIcon: false },
+              { label: 'GitHub', href: 'https://github.com/kashvi-techie', icon: 'M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.1-1.1-1.4-1.1-1.4-.9-.6 0-.6 0-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.4-2.2-.2-4.6-1.1-4.6-4.9 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.6 0 0 .8-.3 2.7 1a9.3 9.3 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.3.2 2.3.1 2.6.6.7 1 1.6 1 2.7 0 3.8-2.4 4.7-4.6 4.9.3.3.6.9.6 1.8v2.7c0 .3.2.6.7.5A10 10 0 0 0 12 2z', fillIcon: true },
+              { label: 'LinkedIn', href: 'https://www.linkedin.com/in/kashvi-pundir-3502183b1', icon: 'M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.3c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V21h-4z', fillIcon: true },
             ].map((link) => (
               <a
                 key={link.label}
@@ -385,7 +385,7 @@ export default function Contact() {
                 style={{
                   fontFamily: 'Inter, sans-serif',
                   fontSize: '0.7rem',
-                  color: 'rgba(248, 243, 235, 0.38)',
+                  color: 'rgba(251, 247, 240, 0.38)',
                   textDecoration: 'none',
                   display: 'flex',
                   alignItems: 'center',
@@ -394,13 +394,15 @@ export default function Contact() {
                   letterSpacing: '0.04em',
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.color = '#C49A3C';
+                  (e.currentTarget as HTMLElement).style.color = '#E3BC5E';
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.color = 'rgba(248, 243, 235, 0.38)';
+                  (e.currentTarget as HTMLElement).style.color = 'rgba(251, 247, 240, 0.38)';
                 }}
               >
-                <span style={{ fontSize: '0.65rem', opacity: 0.6 }}>{link.icon}</span>
+                <svg viewBox="0 0 24 24" fill={link.fillIcon ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={link.fillIcon ? 0 : 1.4} strokeLinecap="round" strokeLinejoin="round" style={{ width: '14px', height: '14px', opacity: 0.8 }}>
+                  <path d={link.icon} />
+                </svg>
                 {link.label}
               </a>
             ))}
@@ -413,25 +415,25 @@ export default function Contact() {
               width: '40px',
               height: '40px',
               borderRadius: '50%',
-              border: '1px solid rgba(196, 154, 60, 0.35)',
+              border: '1px solid rgba(227, 188, 94, 0.35)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#C49A3C',
+              color: '#E3BC5E',
               fontSize: '0.9rem',
               textDecoration: 'none',
               transition: 'all 0.35s ease',
             }}
             onMouseEnter={(e) => {
               const el = e.currentTarget as HTMLElement;
-              el.style.background = 'rgba(196, 154, 60, 0.12)';
-              el.style.borderColor = '#C49A3C';
+              el.style.background = 'rgba(227, 188, 94, 0.12)';
+              el.style.borderColor = '#E3BC5E';
               el.style.transform = 'rotate(45deg)';
             }}
             onMouseLeave={(e) => {
               const el = e.currentTarget as HTMLElement;
               el.style.background = 'transparent';
-              el.style.borderColor = 'rgba(196, 154, 60, 0.35)';
+              el.style.borderColor = 'rgba(227, 188, 94, 0.35)';
               el.style.transform = 'rotate(0deg)';
             }}
           >
@@ -444,12 +446,12 @@ export default function Contact() {
           <svg viewBox="0 0 48 12" style={{ width: '48px' }}>
             <path
               d="M24 1c0 0-5 3-5 5s5 5 5 5 5-3 5-5-5-5-5-5z"
-              stroke="#C49A3C"
+              stroke="#E3BC5E"
               strokeWidth="0.8"
               fill="none"
             />
-            <line x1="0" y1="6" x2="16" y2="6" stroke="#C49A3C" strokeWidth="0.5" />
-            <line x1="32" y1="6" x2="48" y2="6" stroke="#C49A3C" strokeWidth="0.5" />
+            <line x1="0" y1="6" x2="16" y2="6" stroke="#E3BC5E" strokeWidth="0.5" />
+            <line x1="32" y1="6" x2="48" y2="6" stroke="#E3BC5E" strokeWidth="0.5" />
           </svg>
         </div>
       </div>

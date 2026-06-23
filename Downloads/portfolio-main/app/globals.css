@@ -5,18 +5,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap');
 
 :root {
-  --bg-primary: #0B1612;
-  --bg-secondary: #102019;
-  --bg-tertiary: #13241C;
-  --gold-primary: #C49A3C;
-  --gold-secondary: #D4B055;
-  --gold-light: #E0C472;
-  --lotus-cream: #F8F3EB;
-  --peacock-deep: #0F4C5C;
-  --peacock-mid: #1B6B73;
-  --lotus-pink: #EFD4D4;
-  --text-dim: rgba(248, 243, 235, 0.5);
-  --text-muted: rgba(248, 243, 235, 0.35);
+  --bg-primary: #0E1B15;
+  --bg-secondary: #13261D;
+  --bg-tertiary: #173026;
+  --gold-primary: #E9C46A;
+  --gold-secondary: #F2D58A;
+  --gold-light: #F8E7B4;
+  --lotus-cream: #FBF7F0;
+  --peacock-deep: #11586B;
+  --peacock-mid: #1F7A84;
+  --lotus-pink: #F3D8D8;
+  --text-dim: rgba(251, 247, 240, 0.62);
+  --text-muted: rgba(251, 247, 240, 0.42);
 }
 
 @layer base {
@@ -26,12 +26,12 @@
 
   html {
     scroll-behavior: smooth;
-    background-color: #0B1612;
+    background-color: #0E1B15;
   }
 
   body {
-    background-color: #0B1612;
-    color: #F8F3EB;
+    background-color: #0E1B15;
+    color: #FBF7F0;
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -43,18 +43,18 @@
   }
 
   ::selection {
-    background: rgba(196, 154, 60, 0.25);
-    color: #E5D2A2;
+    background: rgba(227, 188, 94, 0.25);
+    color: #F6E3AD;
   }
 
   ::-webkit-scrollbar {
     width: 4px;
   }
   ::-webkit-scrollbar-track {
-    background: #0B1612;
+    background: #0E1B15;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(196, 154, 60, 0.3);
+    background: rgba(227, 188, 94, 0.3);
     border-radius: 2px;
   }
 }
@@ -94,8 +94,8 @@
 }
 
 @keyframes goldGlow {
-  0%, 100% { text-shadow: 0 0 20px rgba(196, 154, 60, 0.0); }
-  50% { text-shadow: 0 0 40px rgba(196, 154, 60, 0.25), 0 0 80px rgba(196, 154, 60, 0.1); }
+  0%, 100% { text-shadow: 0 0 20px rgba(227, 188, 94, 0.0); }
+  50% { text-shadow: 0 0 40px rgba(227, 188, 94, 0.25), 0 0 80px rgba(227, 188, 94, 0.1); }
 }
 
 @keyframes ripple {
@@ -180,7 +180,7 @@
   background: rgba(19, 36, 28, 0.55);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(196, 154, 60, 0.12);
+  border: 1px solid rgba(227, 188, 94, 0.12);
 }
 
 .glass-card-hover {
@@ -189,17 +189,17 @@
 
 .glass-card-hover:hover {
   background: rgba(19, 36, 28, 0.75);
-  border-color: rgba(196, 154, 60, 0.28);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(196, 154, 60, 0.06);
+  border-color: rgba(227, 188, 94, 0.28);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(227, 188, 94, 0.06);
   transform: translateY(-4px);
 }
 
 .gold-border {
-  border: 1px solid rgba(196, 154, 60, 0.2);
+  border: 1px solid rgba(227, 188, 94, 0.2);
 }
 
 .gold-glow {
-  box-shadow: 0 0 30px rgba(196, 154, 60, 0.08), 0 0 60px rgba(196, 154, 60, 0.04);
+  box-shadow: 0 0 30px rgba(227, 188, 94, 0.08), 0 0 60px rgba(227, 188, 94, 0.04);
 }
 
 .mist-layer {
@@ -349,4 +349,81 @@
 
 .gold-line-reveal.visible {
   animation-play-state: running;
+}
+
+/* ─── CTA corner lotus bloom ─── */
+@keyframes cornerBloom {
+  0%   { transform: scale(0) rotate(-40deg); opacity: 0; }
+  60%  { transform: scale(1.15) rotate(8deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.cta-lux {
+  position: relative;
+  overflow: visible;
+}
+.cta-lux .corner-lotus {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0) rotate(-40deg);
+  transition: opacity 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+              transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 0 6px rgba(233, 196, 106, 0.5));
+}
+.cta-lux .corner-lotus.tl { top: -14px;  left: -14px;  }
+.cta-lux .corner-lotus.tr { top: -14px;  right: -14px; }
+.cta-lux .corner-lotus.bl { bottom: -14px; left: -14px;  }
+.cta-lux .corner-lotus.br { bottom: -14px; right: -14px; }
+.cta-lux:hover .corner-lotus {
+  opacity: 0.95;
+  transform: scale(1) rotate(0deg);
+}
+.cta-lux:hover .corner-lotus.tr { transition-delay: 0.05s; }
+.cta-lux:hover .corner-lotus.bl { transition-delay: 0.1s;  }
+.cta-lux:hover .corner-lotus.br { transition-delay: 0.15s; }
+
+/* ─── Luxury sheen sweep on hover ─── */
+@keyframes sheenSweep {
+  0%   { transform: translateX(-120%) skewX(-18deg); }
+  100% { transform: translateX(220%) skewX(-18deg); }
+}
+.sheen {
+  position: relative;
+  overflow: hidden;
+}
+.sheen::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 45%;
+  left: 0;
+  background: linear-gradient(90deg, transparent, rgba(248, 231, 180, 0.18), transparent);
+  transform: translateX(-120%) skewX(-18deg);
+  pointer-events: none;
+}
+.sheen:hover::before {
+  animation: sheenSweep 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ─── Lotus spin (POV rotation handled inline; this is ambient) ─── */
+@keyframes lotusFloatSpin {
+  0%   { transform: translateY(0) rotate(0deg); }
+  50%  { transform: translateY(-10px) rotate(4deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+/* ─── Gold gradient heading accent ─── */
+.gold-gradient-text {
+  background: linear-gradient(100deg, #E9C46A 0%, #F8E7B4 45%, #E9C46A 75%, #F2D58A 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ─── Responsive helpers ─── */
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
 }

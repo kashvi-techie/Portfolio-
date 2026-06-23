@@ -1,16 +1,16 @@
 'use client';
 
 const technologies = [
-  { name: 'Next.js', icon: 'N' },
-  { name: 'TypeScript', icon: 'TS' },
-  { name: 'React', icon: '⚛' },
-  { name: 'Tailwind CSS', icon: '~' },
-  { name: 'Node.js', icon: '⬡' },
-  { name: 'Figma', icon: '▣' },
-  { name: 'Vercel', icon: '▲' },
-  { name: 'GSAP', icon: '◈' },
-  { name: 'Framer Motion', icon: '◉' },
-  { name: 'Gemini API', icon: '✦' },
+  { name: 'Next.js', logo: '/logos/nextjs.svg' },
+  { name: 'TypeScript', logo: '/logos/typescript.svg' },
+  { name: 'React', logo: '/logos/react.svg' },
+  { name: 'Tailwind CSS', logo: '/logos/tailwind.svg' },
+  { name: 'Node.js', logo: '/logos/nodejs.svg' },
+  { name: 'Figma', logo: '/logos/figma.svg' },
+  { name: 'Vercel', logo: '/logos/vercel.svg' },
+  { name: 'GSAP', logo: '/logos/greensock.svg' },
+  { name: 'Framer Motion', logo: '/logos/framer.svg' },
+  { name: 'Gemini API', logo: '/logos/gemini.svg' },
 ];
 
 export default function TechBanner() {
@@ -19,10 +19,10 @@ export default function TechBanner() {
   return (
     <section
       style={{
-        background: 'rgba(16, 32, 25, 0.6)',
-        borderTop: '1px solid rgba(196, 154, 60, 0.08)',
-        borderBottom: '1px solid rgba(196, 154, 60, 0.08)',
-        padding: '1.25rem 0',
+        background: 'rgba(19, 38, 29, 0.7)',
+        borderTop: '1px solid rgba(233, 196, 106, 0.12)',
+        borderBottom: '1px solid rgba(233, 196, 106, 0.12)',
+        padding: '1.4rem 0',
         overflow: 'hidden',
         position: 'relative',
         zIndex: 10,
@@ -36,27 +36,22 @@ export default function TechBanner() {
           top: '50%',
           transform: 'translateY(-50%)',
           zIndex: 20,
-          background: 'rgba(16, 32, 25, 0.95)',
+          background: 'rgba(19, 38, 29, 0.97)',
           paddingRight: '1.5rem',
           display: 'flex',
           alignItems: 'center',
           gap: '0.75rem',
         }}
+        className="tech-label"
       >
-        <div
-          style={{
-            width: '1px',
-            height: '24px',
-            background: 'rgba(196, 154, 60, 0.3)',
-          }}
-        />
+        <div style={{ width: '1px', height: '24px', background: 'rgba(233, 196, 106, 0.4)' }} />
         <span
           style={{
             fontFamily: 'Inter, sans-serif',
             fontSize: '0.58rem',
             letterSpacing: '0.25em',
             textTransform: 'uppercase',
-            color: 'rgba(196, 154, 60, 0.6)',
+            color: 'rgba(233, 196, 106, 0.75)',
             whiteSpace: 'nowrap',
           }}
         >
@@ -65,19 +60,10 @@ export default function TechBanner() {
       </div>
 
       {/* Ticker */}
-      <div
-        style={{
-          paddingLeft: '240px',
-          overflow: 'hidden',
-        }}
-      >
+      <div style={{ paddingLeft: '240px', overflow: 'hidden' }} className="tech-ticker-wrap">
         <div
           className="ticker-track"
-          style={{
-            display: 'flex',
-            gap: '0',
-            width: 'max-content',
-          }}
+          style={{ display: 'flex', gap: '0', width: 'max-content' }}
         >
           {doubled.map((tech, i) => (
             <div
@@ -85,29 +71,30 @@ export default function TechBanner() {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.6rem',
+                gap: '0.7rem',
                 padding: '0 2rem',
-                borderRight: '1px solid rgba(196, 154, 60, 0.1)',
+                borderRight: '1px solid rgba(233, 196, 106, 0.12)',
                 flexShrink: 0,
               }}
             >
-              <span
+              <img
+                src={tech.logo}
+                alt={tech.name}
+                width={20}
+                height={20}
                 style={{
-                  fontFamily: 'Inter, sans-serif',
-                  fontSize: '0.85rem',
-                  color: 'rgba(196, 154, 60, 0.6)',
-                  fontWeight: 500,
-                  minWidth: '20px',
-                  textAlign: 'center',
+                  width: '20px',
+                  height: '20px',
+                  objectFit: 'contain',
+                  opacity: 0.85,
+                  filter: 'drop-shadow(0 0 4px rgba(233,196,106,0.25))',
                 }}
-              >
-                {tech.icon}
-              </span>
+              />
               <span
                 style={{
                   fontFamily: 'Inter, sans-serif',
-                  fontSize: '0.8rem',
-                  color: 'rgba(248, 243, 235, 0.6)',
+                  fontSize: '0.82rem',
+                  color: 'rgba(251, 247, 240, 0.72)',
                   letterSpacing: '0.05em',
                   whiteSpace: 'nowrap',
                 }}
@@ -127,11 +114,18 @@ export default function TechBanner() {
           top: 0,
           bottom: 0,
           width: '80px',
-          background: 'linear-gradient(to left, rgba(16, 32, 25, 0.8), transparent)',
+          background: 'linear-gradient(to left, rgba(19, 38, 29, 0.9), transparent)',
           zIndex: 20,
           pointerEvents: 'none',
         }}
       />
+
+      <style jsx>{`
+        @media (max-width: 640px) {
+          .tech-ticker-wrap { padding-left: 1.5rem !important; }
+          .tech-label { display: none !important; }
+        }
+      `}</style>
     </section>
   );
 }

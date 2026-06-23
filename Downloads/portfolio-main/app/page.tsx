@@ -12,7 +12,7 @@ import Contact from '@/components/portfolio/Contact';
 
 export default function Home() {
   return (
-    <main style={{ position: 'relative', backgroundColor: '#0B1612' }}>
+    <main style={{ position: 'relative', backgroundColor: '#0E1B15' }}>
       <Navigation />
       <Hero />
       <TechBanner />

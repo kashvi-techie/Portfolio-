@@ -75,7 +75,7 @@ export default function Work() {
       id="work"
       ref={sectionRef}
       style={{
-        background: 'linear-gradient(180deg, #0B1612 0%, #102019 100%)',
+        background: 'linear-gradient(180deg, #0E1B15 0%, #13261D 100%)',
         padding: '7rem 2rem',
         position: 'relative',
         overflow: 'hidden',
@@ -91,7 +91,7 @@ export default function Work() {
           height: '400px',
           borderRadius: '50%',
           background:
-            'radial-gradient(circle, rgba(15, 76, 92, 0.07) 0%, transparent 70%)',
+            'radial-gradient(circle, rgba(31, 122, 132, 0.07) 0%, transparent 70%)',
           pointerEvents: 'none',
         }}
       />
@@ -117,7 +117,7 @@ export default function Work() {
                 fontFamily: 'Cormorant Garamond, serif',
                 fontSize: 'clamp(2rem, 4vw, 3.5rem)',
                 fontWeight: 400,
-                color: '#F8F3EB',
+                color: '#FBF7F0',
                 lineHeight: 1.15,
                 maxWidth: '400px',
               }}
@@ -136,7 +136,7 @@ export default function Work() {
             style={{
               fontFamily: 'Inter, sans-serif',
               fontSize: '0.78rem',
-              color: 'rgba(248, 243, 235, 0.5)',
+              color: 'rgba(251, 247, 240, 0.5)',
               letterSpacing: '0.08em',
               textDecoration: 'none',
               display: 'flex',
@@ -146,10 +146,10 @@ export default function Work() {
               cursor: 'pointer',
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.color = '#C49A3C';
+              (e.currentTarget as HTMLElement).style.color = '#E3BC5E';
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.color = 'rgba(248, 243, 235, 0.5)';
+              (e.currentTarget as HTMLElement).style.color = 'rgba(251, 247, 240, 0.5)';
             }}
           >
             View all projects <span style={{ fontSize: '1rem' }}>→</span>
@@ -238,8 +238,8 @@ function ProjectCard({
         opacity: 0,
         transform: 'perspective(1000px) rotateX(14deg) translateY(40px)',
         transition: 'opacity 0.9s cubic-bezier(0.23, 1, 0.32, 1), transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.4s ease, box-shadow 0.4s ease',
-        background: 'rgba(16, 32, 25, 0.6)',
-        border: '1px solid rgba(196, 154, 60, 0.1)',
+        background: 'rgba(19, 38, 29, 0.6)',
+        border: '1px solid rgba(227, 188, 94, 0.1)',
         overflow: 'hidden',
         borderRadius: '8px',
         cursor: 'pointer',
@@ -248,8 +248,8 @@ function ProjectCard({
       }}
       onMouseEnter={(e) => {
         const el = e.currentTarget;
-        el.style.borderColor = 'rgba(196, 154, 60, 0.3)';
-        el.style.boxShadow = '0 24px 60px rgba(0,0,0,0.4), 0 0 40px rgba(196, 154, 60, 0.06)';
+        el.style.borderColor = 'rgba(227, 188, 94, 0.3)';
+        el.style.boxShadow = '0 24px 60px rgba(0,0,0,0.4), 0 0 40px rgba(227, 188, 94, 0.06)';
         const img = el.querySelector('img') as HTMLImageElement;
         if (img) {
           img.style.transform = 'scale(1.04)';
@@ -258,7 +258,7 @@ function ProjectCard({
       }}
       onMouseLeave={(e) => {
         const el = e.currentTarget;
-        el.style.borderColor = 'rgba(196, 154, 60, 0.1)';
+        el.style.borderColor = 'rgba(227, 188, 94, 0.1)';
         el.style.boxShadow = 'none';
         const img = el.querySelector('img') as HTMLImageElement;
         if (img) {
@@ -288,7 +288,7 @@ function ProjectCard({
             left: '1.25rem',
             fontFamily: 'Cormorant Garamond, serif',
             fontSize: '0.85rem',
-            color: 'rgba(196, 154, 60, 0.7)',
+            color: 'rgba(227, 188, 94, 0.7)',
             letterSpacing: '0.1em',
           }}
         >
@@ -302,7 +302,7 @@ function ProjectCard({
             left: 0,
             right: 0,
             padding: '1.5rem 1.25rem 1rem',
-            background: 'linear-gradient(to top, rgba(16, 32, 25, 0.9) 0%, transparent 100%)',
+            background: 'linear-gradient(to top, rgba(19, 38, 29, 0.9) 0%, transparent 100%)',
           }}
         >
           <h3
@@ -310,7 +310,7 @@ function ProjectCard({
               fontFamily: 'Cormorant Garamond, serif',
               fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)',
               fontWeight: 400,
-              color: '#F8F3EB',
+              color: '#FBF7F0',
               lineHeight: 1.1,
             }}
           >
@@ -322,7 +322,7 @@ function ProjectCard({
               fontSize: '0.65rem',
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              color: 'rgba(196, 154, 60, 0.7)',
+              color: 'rgba(227, 188, 94, 0.7)',
               marginTop: '0.25rem',
             }}
           >
@@ -338,7 +338,7 @@ function ProjectCard({
             fontFamily: 'Inter, sans-serif',
             fontSize: '0.78rem',
             lineHeight: 1.7,
-            color: 'rgba(248, 243, 235, 0.45)',
+            color: 'rgba(251, 247, 240, 0.45)',
             fontWeight: 300,
             marginBottom: '1.25rem',
           }}
@@ -365,10 +365,10 @@ function ProjectCard({
                   fontSize: '0.62rem',
                   letterSpacing: '0.06em',
                   padding: '0.25rem 0.6rem',
-                  background: 'rgba(196, 154, 60, 0.08)',
-                  border: '1px solid rgba(196, 154, 60, 0.15)',
+                  background: 'rgba(227, 188, 94, 0.08)',
+                  border: '1px solid rgba(227, 188, 94, 0.15)',
                   borderRadius: '100px',
-                  color: 'rgba(248, 243, 235, 0.5)',
+                  color: 'rgba(251, 247, 240, 0.5)',
                 }}
               >
                 {tag}
@@ -384,11 +384,11 @@ function ProjectCard({
               width: '32px',
               height: '32px',
               borderRadius: '50%',
-              border: '1px solid rgba(196, 154, 60, 0.3)',
+              border: '1px solid rgba(227, 188, 94, 0.3)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#C49A3C',
+              color: '#E3BC5E',
               fontSize: '0.75rem',
               textDecoration: 'none',
               transition: 'all 0.3s ease',
@@ -396,13 +396,13 @@ function ProjectCard({
             }}
             onMouseEnter={(e) => {
               const el = e.currentTarget;
-              el.style.background = 'rgba(196, 154, 60, 0.15)';
-              el.style.borderColor = '#C49A3C';
+              el.style.background = 'rgba(227, 188, 94, 0.15)';
+              el.style.borderColor = '#E3BC5E';
             }}
             onMouseLeave={(e) => {
               const el = e.currentTarget;
               el.style.background = 'transparent';
-              el.style.borderColor = 'rgba(196, 154, 60, 0.3)';
+              el.style.borderColor = 'rgba(227, 188, 94, 0.3)';
             }}
             onClick={(e) => e.stopPropagation()}
           >

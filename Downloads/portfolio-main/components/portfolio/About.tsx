@@ -35,7 +35,7 @@ export default function About() {
       id="about"
       ref={sectionRef}
       style={{
-        background: '#102019',
+        background: '#13261D',
         padding: '7rem 2rem',
         position: 'relative',
         overflow: 'hidden',
@@ -51,7 +51,7 @@ export default function About() {
           height: '500px',
           borderRadius: '50%',
           background:
-            'radial-gradient(circle, rgba(15, 76, 92, 0.08) 0%, transparent 70%)',
+            'radial-gradient(circle, rgba(31, 122, 132, 0.08) 0%, transparent 70%)',
           pointerEvents: 'none',
         }}
       />
@@ -79,14 +79,14 @@ export default function About() {
               opacity: 0.4,
             }}
           >
-            <div style={{ width: '1px', height: '40px', background: '#C49A3C' }} />
+            <div style={{ width: '1px', height: '40px', background: '#E3BC5E' }} />
             <span
               style={{
                 fontFamily: 'Inter, sans-serif',
                 fontSize: '0.58rem',
                 letterSpacing: '0.3em',
                 textTransform: 'uppercase',
-                color: '#C49A3C',
+                color: '#E3BC5E',
                 writingMode: 'vertical-rl',
                 transform: 'rotate(180deg)',
               }}
@@ -99,7 +99,7 @@ export default function About() {
           <svg viewBox="0 0 24 24" style={{ width: '18px', opacity: 0.3 }}>
             <path
               d="M12 2c0 0-6 5-6 10s6 9 6 9 6-4 6-9S12 2 12 2z"
-              stroke="#C49A3C"
+              stroke="#E3BC5E"
               strokeWidth="1"
               fill="none"
             />
@@ -129,11 +129,11 @@ export default function About() {
                 fontSize: 'clamp(1.3rem, 2vw, 1.7rem)',
                 fontWeight: 400,
                 lineHeight: 1.4,
-                color: '#F8F3EB',
+                color: '#FBF7F0',
               }}
             >
               I blend design thinking with engineering excellence to build products that create{' '}
-              <span style={{ color: '#C49A3C', fontStyle: 'italic' }}>real impact.</span>
+              <span style={{ color: '#E3BC5E', fontStyle: 'italic' }}>real impact.</span>
             </p>
           </div>
 
@@ -150,7 +150,7 @@ export default function About() {
                 fontFamily: 'Inter, sans-serif',
                 fontSize: '0.825rem',
                 lineHeight: 1.85,
-                color: 'rgba(248, 243, 235, 0.55)',
+                color: 'rgba(251, 247, 240, 0.55)',
                 fontWeight: 300,
                 marginBottom: '1.5rem',
               }}
@@ -168,7 +168,7 @@ export default function About() {
               style={{
                 fontFamily: 'Inter, sans-serif',
                 fontSize: '0.75rem',
-                color: '#C49A3C',
+                color: '#E3BC5E',
                 letterSpacing: '0.08em',
                 textDecoration: 'none',
                 display: 'inline-flex',
@@ -198,13 +198,13 @@ export default function About() {
               <svg viewBox="0 0 24 24" style={{ width: '22px', opacity: 0.5 }}>
                 <path
                   d="M12 3c0 0-5 4-5 9s5 8 5 8 5-3 5-8S12 3 12 3z"
-                  stroke="#C49A3C"
+                  stroke="#E3BC5E"
                   strokeWidth="1"
-                  fill="rgba(196, 154, 60, 0.08)"
+                  fill="rgba(227, 188, 94, 0.08)"
                 />
                 <path
                   d="M7 10c-3 0-5 3-5 3s2 3 5 2M17 10c3 0 5 3 5 3s-2 3-5 2"
-                  stroke="#C49A3C"
+                  stroke="#E3BC5E"
                   strokeWidth="1"
                   fill="none"
                 />
@@ -216,7 +216,7 @@ export default function About() {
                     fontFamily: 'Cormorant Garamond, serif',
                     fontSize: 'clamp(2rem, 3vw, 2.8rem)',
                     fontWeight: 400,
-                    color: '#C49A3C',
+                    color: '#E3BC5E',
                     lineHeight: 1,
                     marginBottom: '0.5rem',
                   }}
@@ -227,7 +227,7 @@ export default function About() {
                   style={{
                     fontFamily: 'Inter, sans-serif',
                     fontSize: '0.72rem',
-                    color: 'rgba(248, 243, 235, 0.45)',
+                    color: 'rgba(251, 247, 240, 0.45)',
                     lineHeight: 1.5,
                     fontWeight: 300,
                     whiteSpace: 'pre-line',
