@@ -117,7 +117,7 @@ export default function Hero() {
         style={{
           position: 'relative', zIndex: 10,
           maxWidth: '1400px', margin: '0 auto',
-          padding: 'clamp(6.5rem,9vw,9rem) clamp(1.25rem,4vw,2rem) clamp(4rem,6vw,6rem)',
+          padding: 'clamp(4.5rem, 7vh, 6rem) clamp(1.25rem,4vw,2rem) clamp(2.5rem, 5vh, 4rem)',
           width: '100%',
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
@@ -270,8 +270,8 @@ export default function Hero() {
         </div>
 
         {/* ── Right: Portrait + lotus companion + availability banner ── */}
-        <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '480px' }}>
-          <div style={{ position: 'relative', width: 'min(440px, 100%)' }}>
+        <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }} className="hero-right">
+          <div style={{ position: 'relative', width: 'min(360px, 80vw, 40vh)' }}>
 
             {/* Lotus companion image — beside the portrait, rising from the banner */}
             <div
@@ -360,26 +360,20 @@ export default function Hero() {
               ref={cardRef}
               style={{
                 position: 'relative',
-                margin: '1.75rem auto 0',
-                width: 'min(280px, 92%)',
+                margin: '-2.75rem auto 0',
+                width: 'min(300px, 100%)',
                 zIndex: 5,
-                background: 'rgba(16, 33, 25, 0.88)',
+                background: 'rgba(14, 27, 21, 0.82)',
                 backdropFilter: 'blur(24px)',
                 WebkitBackdropFilter: 'blur(24px)',
-                border: '1px solid rgba(233, 196, 106, 0.28)',
+                border: '1px solid rgba(233, 196, 106, 0.3)',
                 borderRadius: '14px',
-                padding: '1.25rem 1.4rem',
+                padding: '1rem 1.3rem',
                 textAlign: 'center',
-                boxShadow: '0 18px 50px rgba(0,0,0,0.4)',
+                boxShadow: '0 18px 50px rgba(0,0,0,0.45)',
               }}
             >
-              {/* connector up to cluster */}
-              <div className="hide-mobile" style={{
-                position: 'absolute', top: '-1.75rem', left: '50%', transform: 'translateX(-50%)',
-                width: '1px', height: '1.75rem',
-                background: 'linear-gradient(to bottom, transparent, rgba(233,196,106,0.5))',
-              }} />
-              <svg viewBox="0 0 32 32" fill="none" style={{ width: '24px', height: '24px', margin: '0 auto 0.6rem' }}>
+              <svg viewBox="0 0 32 32" fill="none" style={{ width: '22px', height: '22px', margin: '0 auto 0.45rem' }}>
                 <path d="M16 3c0 0-7 5-7 11s7 10 7 10 7-4 7-10S16 3 16 3z" stroke="#E9C46A" strokeWidth="1" fill="rgba(233,196,106,0.1)" />
                 <path d="M9 16c-4 0-6 4-6 4s4 3 7 1M23 16c4 0 6 4 6 4s-4 3-7 1" stroke="#E9C46A" strokeWidth="0.8" fill="none" />
               </svg>
