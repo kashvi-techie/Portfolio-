@@ -57,27 +57,10 @@ const icons: Record<number, JSX.Element> = {
   ),
 };
 
-/* Layered petal rings for the CSS 3D lotus bloom (outer flat → inner upright). */
-const LOTUS_RINGS: {
-  count: number; len: number; w: number; tilt: number; z: number; offset: number; opacity: number;
-}[] = [
-  { count: 10, len: 132, w: 52, tilt: 72, z: 0, offset: 0, opacity: 0.8 },
-  { count: 8, len: 108, w: 46, tilt: 56, z: 18, offset: 18, opacity: 0.92 },
-  { count: 6, len: 84, w: 40, tilt: 38, z: 36, offset: 30, opacity: 1 },
-];
-
-/* Distinct 3D camera angle (point of view) per capability — the object is orbited
-   to a new viewpoint on each scroll step, rather than spun flat in 2D. */
-const LOTUS_POVS: { rx: number; ry: number }[] = [
-  { rx: 14, ry: 0 },    // Front
-  { rx: 22, ry: -55 },  // Left
-  { rx: 4, ry: 55 },    // Right
-  { rx: 46, ry: 16 },   // Back / top-down
-];
-
 export default function Skills() {
   const sectionRef = useRef<HTMLElement>(null);
-  const lotus3dRef = useRef<HTMLDivElement>(null);
+  const lotusInnerRef = useRef<HTMLDivElement>(null);
+  const lotusRingRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [entered, setEntered] = useState(false);
   const [cardVisible, setCardVisible] = useState(true);
@@ -126,7 +109,7 @@ export default function Skills() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // ── rAF lerp: orbit the 3D lotus camera to a distinct POV per capability ──
+  // ── rAF lerp: ease the lotus toward a 90°-snapped target so it "locks" ──
   useEffect(() => {
     const reduce =
       typeof window !== 'undefined' &&
@@ -134,21 +117,24 @@ export default function Skills() {
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     let raf = 0;
-    let rx = LOTUS_POVS[0].rx;
-    let ry = LOTUS_POVS[0].ry;
+    let current = activeIndexRef.current * 90; // smoothed rotation (deg)
     const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
     const tick = () => {
-      const pov = LOTUS_POVS[activeIndexRef.current] ?? LOTUS_POVS[0];
-      const frac = reduce ? 0 : fractionRef.current;
-      const targetRx = pov.rx;
-      // small live drift within an item so the object feels alive between locks
-      const targetRy = pov.ry + frac * 8;
-      rx = reduce ? targetRx : lerp(rx, targetRx, 0.07);
-      ry = reduce ? targetRy : lerp(ry, targetRy, 0.07);
+      // Snapped 90° target per item + a small live sub-rotation (≤8°) from
+      // the within-item fraction so it feels alive but still locks at each step.
+      const base = activeIndexRef.current * 90;
+      const sub = reduce ? 0 : fractionRef.current * 8;
+      const target = base + sub;
 
-      const el = lotus3dRef.current;
-      if (el) el.style.transform = `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+      // Ease toward target. Reduced motion snaps; otherwise smooth lerp.
+      current = reduce ? target : lerp(current, target, 0.12);
+      if (Math.abs(current - target) < 0.01) current = target;
+
+      const inner = lotusInnerRef.current;
+      const ring = lotusRingRef.current;
+      if (inner) inner.style.transform = `rotate(${current}deg)`;
+      if (ring) ring.style.transform = `rotate(${-current * 0.5}deg)`;
 
       raf = window.requestAnimationFrame(tick);
     };
@@ -204,38 +190,45 @@ export default function Skills() {
           {/* soft halo */}
           <div style={{
             position: 'absolute', inset: '8%', borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(233,196,106,0.16) 0%, transparent 65%)',
+            background: 'radial-gradient(circle, rgba(233,196,106,0.14) 0%, transparent 65%)',
           }} />
-          {/* CSS 3D lotus bloom — the camera orbits to a new POV on each scroll */}
-          <div className="lotus-stage">
-            <div ref={lotus3dRef} className="lotus-3d">
-              {LOTUS_RINGS.map((ring, r) => (
-                <div className="lotus-ring" key={r} style={{ transform: `translateZ(${ring.z}px)` }}>
-                  {Array.from({ length: ring.count }).map((_, i) => {
-                    const angle = ring.offset + i * (360 / ring.count);
-                    return (
-                      <span
-                        key={i}
-                        className="lotus-petal"
-                        style={{
-                          width: `${ring.w}px`, height: `${ring.len}px`,
-                          marginLeft: `${-ring.w / 2}px`, marginTop: `${-ring.len}px`,
-                          opacity: ring.opacity,
-                          transform: `rotateZ(${angle}deg) rotateX(${-ring.tilt}deg)`,
-                        }}
-                      />
-                    );
-                  })}
-                </div>
-              ))}
-              <span className="lotus-core" />
-            </div>
+          {/* rotating real lotus — driven by rAF lerp toward a 90°-snapped target */}
+          <div
+            ref={lotusInnerRef}
+            style={{
+              position: 'absolute', inset: 0,
+              transform: `rotate(${activeIndex * 90}deg)`,
+              willChange: 'transform',
+              borderRadius: '50%',
+              WebkitMaskImage: 'radial-gradient(circle, #000 58%, transparent 72%)',
+              maskImage: 'radial-gradient(circle, #000 58%, transparent 72%)',
+            }}
+          >
+            <img
+              src="/images/lotus/lotus-dark.jpg"
+              alt="Rotating lotus"
+              style={{
+                width: '100%', height: '100%', objectFit: 'cover',
+                mixBlendMode: 'screen',
+                filter: 'brightness(1.15) saturate(1.15) contrast(1.05)',
+              }}
+            />
           </div>
+          {/* thin counter-rotating ring — also lerped via rAF */}
+          <div
+            ref={lotusRingRef}
+            style={{
+              position: 'absolute', inset: '2%', borderRadius: '50%',
+              border: '1px solid rgba(233, 196, 106, 0.18)',
+              transform: `rotate(${-activeIndex * 45}deg)`,
+              willChange: 'transform',
+            }}
+          />
           {/* POV label */}
           <div style={{
             position: 'absolute', bottom: '6%', left: '50%', transform: 'translateX(-50%)',
             fontFamily: 'Inter, sans-serif', fontSize: '0.55rem', letterSpacing: '0.3em',
-            textTransform: 'uppercase', color: 'rgba(233, 196, 106, 0.55)', zIndex: 3,
+            textTransform: 'uppercase', color: 'rgba(233, 196, 106, 0.55)',
           }}>
             {group.pov} view
           </div>
@@ -390,53 +383,6 @@ export default function Skills() {
           opacity: 0;
           transform: translateY(8px);
           animation: tagRise 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-        }
-        /* ── CSS 3D lotus bloom ── */
-        .lotus-stage {
-          position: absolute;
-          inset: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          perspective: 900px;
-        }
-        .lotus-3d {
-          position: relative;
-          width: 0;
-          height: 0;
-          transform-style: preserve-3d;
-          transform: rotateX(14deg) rotateY(0deg);
-          will-change: transform;
-        }
-        .lotus-ring {
-          position: absolute;
-          left: 0;
-          top: 0;
-          transform-style: preserve-3d;
-        }
-        .lotus-petal {
-          position: absolute;
-          left: 0;
-          top: 0;
-          transform-origin: 50% 100%;
-          border-radius: 50% 50% 50% 50% / 80% 80% 22% 22%;
-          background: linear-gradient(to top, rgba(233, 196, 106, 0.03), rgba(233, 196, 106, 0.18));
-          border: 1px solid rgba(233, 196, 106, 0.5);
-          box-shadow: inset 0 0 14px rgba(233, 196, 106, 0.1);
-          backface-visibility: visible;
-        }
-        .lotus-core {
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 32px;
-          height: 32px;
-          margin-left: -16px;
-          margin-top: -16px;
-          border-radius: 50%;
-          background: radial-gradient(circle, rgba(248, 231, 180, 0.65) 0%, rgba(233, 196, 106, 0.18) 65%, transparent 80%);
-          transform: translateZ(46px);
-          box-shadow: 0 0 20px rgba(233, 196, 106, 0.3);
         }
         @media (max-width: 768px) {
           .skills-inner-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }

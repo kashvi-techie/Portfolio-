@@ -510,8 +510,11 @@ export default function Hero() {
 
                 {/* Actual portrait — clean & bright */}
                 <img
-                  src="/images/image%20copy.png"
+                  src="/images/portrait.webp"
                   alt="Kashvi Pundir"
+                  width={660}
+                  height={1174}
+                  decoding="async"
                   style={{
                     position: 'absolute', inset: 0, width: '100%', height: '100%',
                     objectFit: 'cover', objectPosition: 'center top', zIndex: 2,
