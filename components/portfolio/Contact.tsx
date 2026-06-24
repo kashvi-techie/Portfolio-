@@ -2,9 +2,24 @@
 
 import { useEffect, useRef } from 'react';
 
-export default function Contact() {
-  const sectionRef = useRef<HTMLElement>(null);
+// Linear interpolation helper
+const lerp = (a: number, b: number, t: number): number => a + (b - a) * t;
 
+// Approximation of power3.out / cubic-bezier(0.16,1,0.3,1) for JS-side easing
+const easeOutCubic = (t: number): number => 1 - Math.pow(1 - t, 3);
+
+export default function Contact() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+  // Refs for the scroll-driven finale
+  const footerRef = useRef<HTMLElement | null>(null);
+  const lotusRef = useRef<SVGSVGElement>(null);
+  const ctaRowRef = useRef<HTMLDivElement>(null);
+  const sayHelloRef = useRef<HTMLAnchorElement>(null);
+  const linkedInRef = useRef<HTMLAnchorElement>(null);
+  // Smoothed progress kept across rAF frames
+  const progressRef = useRef<number>(0);
+
+  // Reveal-on-scroll observer (existing behaviour)
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -22,14 +37,128 @@ export default function Contact() {
     return () => observer.disconnect();
   }, []);
 
+  // Scroll-end cinematic finale: one progress drives background, lotus bloom & CTA spread
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const reduceMotion =
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const el = footerRef.current;
+    if (!el) return;
+
+    // From dark green → deep charcoal velvet
+    const FROM = { r: 0x0e, g: 0x1b, b: 0x15 }; // #0E1B15
+    const TO = { r: 0x14, g: 0x10, b: 0x14 }; // #141014
+
+    let rafId = 0;
+    let needsFrame = false;
+
+    const applyProgress = (p: number) => {
+      const eased = easeOutCubic(p);
+
+      // 1. Background interpolation
+      const r = Math.round(lerp(FROM.r, TO.r, eased));
+      const g = Math.round(lerp(FROM.g, TO.g, eased));
+      const b = Math.round(lerp(FROM.b, TO.b, eased));
+      el.style.background = `rgb(${r}, ${g}, ${b})`;
+
+      // 2. Wireframe lotus bloom — scale up to ~2.5, fade up subtly
+      const lotus = lotusRef.current;
+      if (lotus) {
+        const scale = lerp(1, 2.5, eased);
+        lotus.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        lotus.style.opacity = String(lerp(0.06, 0.22, eased));
+        // Outer petals open outward
+        const open = eased;
+        lotus.style.setProperty('--petal-open', String(open));
+      }
+
+      // 3. CTA links slide apart symmetrically.
+      // Spread is exposed as a CSS var so hover lift can compose with it.
+      const spread = lerp(0, 64, eased); // px each side
+      if (sayHelloRef.current) {
+        sayHelloRef.current.style.setProperty('--spread', `${-spread}px`);
+      }
+      if (linkedInRef.current) {
+        linkedInRef.current.style.setProperty('--spread', `${spread}px`);
+      }
+      if (ctaRowRef.current) {
+        ctaRowRef.current.style.gap = `${lerp(1, 2.4, eased)}rem`;
+      }
+    };
+
+    if (reduceMotion) {
+      // Calm final state — show the resolved finale without scroll animation
+      progressRef.current = 1;
+      applyProgress(1);
+      return;
+    }
+
+    const computeTarget = (): number => {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      // 0 when the footer top first enters the viewport bottom,
+      // 1 once the footer top reaches the upper portion of the viewport (fills view).
+      const start = vh; // footer top at viewport bottom
+      const end = vh * 0.2; // footer top near the top => fully "filled"
+      const raw = (start - rect.top) / (start - end);
+      return Math.min(1, Math.max(0, raw));
+    };
+
+    const tick = () => {
+      const target = computeTarget();
+      // Smooth toward target for a fluid cinematic feel
+      progressRef.current = lerp(progressRef.current, target, 0.12);
+      if (Math.abs(progressRef.current - target) < 0.001) {
+        progressRef.current = target;
+      }
+      applyProgress(progressRef.current);
+
+      if (Math.abs(progressRef.current - target) > 0.0005) {
+        rafId = requestAnimationFrame(tick);
+      } else {
+        needsFrame = false;
+      }
+    };
+
+    const schedule = () => {
+      if (!needsFrame) {
+        needsFrame = true;
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+
+    const onScroll = () => schedule();
+    const onResize = () => schedule();
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
+
+    // Initialise on mount
+    schedule();
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, []);
+
   return (
     <footer
       id="contact"
-      ref={sectionRef}
+      ref={(node) => {
+        sectionRef.current = node;
+        footerRef.current = node;
+      }}
       style={{
         position: 'relative',
         overflow: 'hidden',
         background: '#0E1B15',
+        transition: 'background 0.2s linear',
+        willChange: 'background',
       }}
     >
       {/* Main contact hero area */}
@@ -118,6 +247,52 @@ export default function Contact() {
           ))}
         </div>
 
+        {/* Scroll-end wireframe vector lotus — blooms behind the CTA */}
+        <svg
+          ref={lotusRef}
+          viewBox="0 0 200 200"
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            width: 'min(520px, 90vw)',
+            height: 'min(520px, 90vw)',
+            transform: 'translate(-50%, -50%) scale(1)',
+            transformOrigin: 'center center',
+            opacity: 0.06,
+            zIndex: 1,
+            pointerEvents: 'none',
+            transition:
+              'transform 0.45s cubic-bezier(0.16,1,0.3,1), opacity 0.45s cubic-bezier(0.16,1,0.3,1)',
+            willChange: 'transform, opacity',
+            ['--petal-open' as string]: '0',
+          }}
+        >
+          {/* Inner / core petals — stay put, define the heart of the bloom */}
+          <g fill="none" stroke="#E9C46A" strokeWidth="0.6" strokeLinecap="round">
+            <path d="M100 100 C 92 70, 92 50, 100 30 C 108 50, 108 70, 100 100 Z" />
+            <path d="M100 100 C 116 74, 132 62, 150 56 C 142 78, 126 92, 100 100 Z" />
+            <path d="M100 100 C 84 74, 68 62, 50 56 C 58 78, 74 92, 100 100 Z" />
+            <path d="M100 100 C 120 84, 140 82, 160 86 C 146 102, 124 104, 100 100 Z" />
+            <path d="M100 100 C 80 84, 60 82, 40 86 C 54 102, 76 104, 100 100 Z" />
+          </g>
+          {/* Outer petals — open / radiate outward as progress → 1 */}
+          <g
+            fill="none"
+            stroke="#F2D58A"
+            strokeWidth="0.5"
+            strokeLinecap="round"
+            className="lotus-outer"
+          >
+            <path className="petal-top" d="M100 100 C 90 60, 90 36, 100 14 C 110 36, 110 60, 100 100 Z" />
+            <path className="petal-tr" d="M100 100 C 124 70, 150 54, 176 46 C 164 74, 140 94, 100 100 Z" />
+            <path className="petal-tl" d="M100 100 C 76 70, 50 54, 24 46 C 36 74, 60 94, 100 100 Z" />
+            <path className="petal-br" d="M100 100 C 126 88, 154 90, 182 96 C 162 116, 130 112, 100 100 Z" />
+            <path className="petal-bl" d="M100 100 C 74 88, 46 90, 18 96 C 38 116, 70 112, 100 100 Z" />
+          </g>
+        </svg>
+
         {/* Content */}
         <div style={{ position: 'relative', zIndex: 10, maxWidth: '700px' }}>
           {/* Lotus icon */}
@@ -187,6 +362,7 @@ export default function Contact() {
           </p>
 
           <div
+            ref={ctaRowRef}
             className="reveal"
             style={{
               display: 'flex',
@@ -194,9 +370,11 @@ export default function Contact() {
               justifyContent: 'center',
               flexWrap: 'wrap',
               transitionDelay: '0.3s',
+              willChange: 'gap',
             }}
           >
             <a
+              ref={sayHelloRef}
               href="mailto:kashvipcm@gmail.com"
               style={{
                 display: 'inline-flex',
@@ -211,25 +389,31 @@ export default function Contact() {
                 letterSpacing: '0.1em',
                 color: '#F6E3AD',
                 textDecoration: 'none',
-                transition: 'all 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
+                transform: 'translateX(var(--spread, 0px)) translateY(var(--lift, 0px))',
+                ['--spread' as string]: '0px',
+                ['--lift' as string]: '0px',
+                transition:
+                  'transform 0.45s cubic-bezier(0.16,1,0.3,1), background 0.4s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
+                willChange: 'transform',
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLElement;
                 el.style.background = 'rgba(227, 188, 94, 0.22)';
                 el.style.borderColor = 'rgba(227, 188, 94, 0.7)';
-                el.style.transform = 'translateY(-2px)';
+                el.style.setProperty('--lift', '-2px');
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLElement;
                 el.style.background = 'rgba(227, 188, 94, 0.12)';
                 el.style.borderColor = 'rgba(227, 188, 94, 0.4)';
-                el.style.transform = 'translateY(0)';
+                el.style.setProperty('--lift', '0px');
               }}
             >
               Say Hello ✦
             </a>
 
             <a
+              ref={linkedInRef}
               href="https://www.linkedin.com/in/kashvi-pundir-3502183b1"
               target="_blank"
               rel="noopener noreferrer"
@@ -246,7 +430,11 @@ export default function Contact() {
                 letterSpacing: '0.1em',
                 color: 'rgba(251, 247, 240, 0.5)',
                 textDecoration: 'none',
-                transition: 'all 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
+                transform: 'translateX(var(--spread, 0px))',
+                ['--spread' as string]: '0px',
+                transition:
+                  'transform 0.45s cubic-bezier(0.16,1,0.3,1), border-color 0.4s cubic-bezier(0.23, 1, 0.32, 1), color 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
+                willChange: 'transform',
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLElement;
@@ -455,6 +643,52 @@ export default function Contact() {
           </svg>
         </div>
       </div>
+
+      <style jsx>{`
+        /* Outer petals of the finale lotus radiate outward as --petal-open → 1 */
+        .lotus-outer path {
+          transform-box: fill-box;
+          transform-origin: 50% 100%;
+          transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .lotus-outer .petal-top {
+          transform: translateY(calc(var(--petal-open, 0) * -14px));
+        }
+        .lotus-outer .petal-tr {
+          transform: translate(
+              calc(var(--petal-open, 0) * 12px),
+              calc(var(--petal-open, 0) * -8px)
+            )
+            rotate(calc(var(--petal-open, 0) * 10deg));
+        }
+        .lotus-outer .petal-tl {
+          transform: translate(
+              calc(var(--petal-open, 0) * -12px),
+              calc(var(--petal-open, 0) * -8px)
+            )
+            rotate(calc(var(--petal-open, 0) * -10deg));
+        }
+        .lotus-outer .petal-br {
+          transform: translate(
+              calc(var(--petal-open, 0) * 14px),
+              calc(var(--petal-open, 0) * 6px)
+            )
+            rotate(calc(var(--petal-open, 0) * 12deg));
+        }
+        .lotus-outer .petal-bl {
+          transform: translate(
+              calc(var(--petal-open, 0) * -14px),
+              calc(var(--petal-open, 0) * 6px)
+            )
+            rotate(calc(var(--petal-open, 0) * -12deg));
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .lotus-outer path {
+            transition: none;
+          }
+        }
+      `}</style>
     </footer>
   );
 }

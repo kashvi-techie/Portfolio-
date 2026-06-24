@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const projects = [
   {
@@ -12,6 +12,7 @@ const projects = [
     image:
       'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800',
     tags: ['Next.js', 'TypeScript', 'Tailwind', 'Framer Motion'],
+    metrics: ['Lighthouse 92', 'Next.js 15', '-30% bundle'],
     href: 'https://www.sortedd.in/',
   },
   {
@@ -23,6 +24,7 @@ const projects = [
     image:
       'https://images.pexels.com/photos/5935791/pexels-photo-5935791.jpeg?auto=compress&cs=tinysrgb&w=800',
     tags: ['Next.js', 'TypeScript', 'Gemini API', 'VectorShift'],
+    metrics: ['Lighthouse 95', 'Gemini API', 'Realtime'],
     href: 'https://omni-post-ai-beryl.vercel.app/',
   },
   {
@@ -34,6 +36,7 @@ const projects = [
     image:
       'https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=800',
     tags: ['Next.js', 'TypeScript', 'Gemini API', 'Vercel'],
+    metrics: ['Lighthouse 90', 'Prompt → UI', 'Vercel Edge'],
     href: 'https://ai-image-to-saa-s-product-generator-izfz4ehkq.vercel.app/',
   },
   {
@@ -45,12 +48,26 @@ const projects = [
     image:
       'https://images.pexels.com/photos/5412270/pexels-photo-5412270.jpeg?auto=compress&cs=tinysrgb&w=800',
     tags: ['Next.js', 'TypeScript', 'Framer Motion', 'Vercel'],
+    metrics: ['Lighthouse 93', '60fps motion', 'Vercel'],
     href: 'https://pslytherr-awrd0zxm0-kashvis-projects-25d3dcb0.vercel.app/',
   },
 ];
 
+type Project = (typeof projects)[number];
+
 export default function Work() {
   const sectionRef = useRef<HTMLElement>(null);
+
+  // ---- Shared glassmorphic pointer-tracking preview capsule ----
+  const capsuleRef = useRef<HTMLDivElement>(null);
+  const [activeProject, setActiveProject] = useState<Project | null>(null);
+
+  // Pointer spring state lives in refs so the single rAF loop can read/write
+  // without triggering React re-renders.
+  const targetPos = useRef({ x: 0, y: 0 });
+  const currentPos = useRef({ x: 0, y: 0 });
+  const visible = useRef(false);
+  const rafId = useRef<number | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -69,6 +86,50 @@ export default function Work() {
 
     return () => observer.disconnect();
   }, []);
+
+  // Single rAF loop: lerp the capsule toward the pointer for a smooth lag.
+  useEffect(() => {
+    const tick = () => {
+      const cur = currentPos.current;
+      const tgt = targetPos.current;
+      cur.x += (tgt.x - cur.x) * 0.15;
+      cur.y += (tgt.y - cur.y) * 0.15;
+
+      const el = capsuleRef.current;
+      if (el) {
+        // Offset so the capsule floats up-right of the cursor.
+        el.style.transform = `translate3d(${cur.x + 18}px, ${cur.y - 18}px, 0) scale(${
+          visible.current ? 1 : 0.85
+        })`;
+        el.style.opacity = visible.current ? '1' : '0';
+      }
+      rafId.current = requestAnimationFrame(tick);
+    };
+    rafId.current = requestAnimationFrame(tick);
+
+    return () => {
+      if (rafId.current !== null) cancelAnimationFrame(rafId.current);
+    };
+  }, []);
+
+  const handleProjectEnter = (project: Project, e: { clientX: number; clientY: number }) => {
+    // Snap the spring origin to the cursor on first enter so it doesn't fly in
+    // from a stale position.
+    if (!visible.current) {
+      currentPos.current = { x: e.clientX, y: e.clientY };
+    }
+    targetPos.current = { x: e.clientX, y: e.clientY };
+    visible.current = true;
+    setActiveProject(project);
+  };
+
+  const handleProjectMove = (e: { clientX: number; clientY: number }) => {
+    targetPos.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const handleProjectLeave = () => {
+    visible.current = false;
+  };
 
   return (
     <section
@@ -166,7 +227,71 @@ export default function Work() {
           className="work-grid"
         >
           {projects.map((project, i) => (
-            <ProjectCard key={i} project={project} index={i} />
+            <ProjectCard
+              key={i}
+              project={project}
+              index={i}
+              onPointerEnterProject={handleProjectEnter}
+              onPointerMoveProject={handleProjectMove}
+              onPointerLeaveProject={handleProjectLeave}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Glassmorphic pointer-tracking preview capsule (single, repositioned) */}
+      <div
+        ref={capsuleRef}
+        aria-hidden="true"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          zIndex: 50,
+          opacity: 0,
+          pointerEvents: 'none',
+          willChange: 'transform, opacity',
+          transition: 'opacity 0.35s ease',
+          padding: '0.7rem 0.85rem',
+          minWidth: '180px',
+          borderRadius: '14px',
+          background: 'rgba(14, 27, 21, 0.55)',
+          backdropFilter: 'blur(14px) saturate(1.2)',
+          WebkitBackdropFilter: 'blur(14px) saturate(1.2)',
+          border: '1px solid rgba(233, 196, 106, 0.35)',
+          boxShadow:
+            '0 18px 50px rgba(0,0,0,0.45), inset 0 0 0 1px rgba(248, 231, 180, 0.06)',
+        }}
+      >
+        <div
+          style={{
+            fontFamily: 'Cormorant Garamond, serif',
+            fontSize: '1rem',
+            color: '#F8E7B4',
+            lineHeight: 1.1,
+            marginBottom: '0.5rem',
+          }}
+        >
+          {activeProject?.title ?? ''}
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
+          {activeProject?.metrics.map((m) => (
+            <span
+              key={m}
+              style={{
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '0.6rem',
+                letterSpacing: '0.05em',
+                padding: '0.2rem 0.55rem',
+                borderRadius: '100px',
+                color: '#FBF7F0',
+                background: 'rgba(233, 196, 106, 0.12)',
+                border: '1px solid rgba(233, 196, 106, 0.3)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {m}
+            </span>
           ))}
         </div>
       </div>
@@ -185,32 +310,71 @@ export default function Work() {
 function ProjectCard({
   project,
   index,
+  onPointerEnterProject,
+  onPointerMoveProject,
+  onPointerLeaveProject,
 }: {
-  project: (typeof projects)[0];
+  project: Project;
   index: number;
+  onPointerEnterProject: (project: Project, e: { clientX: number; clientY: number }) => void;
+  onPointerMoveProject: (e: { clientX: number; clientY: number }) => void;
+  onPointerLeaveProject: () => void;
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const textsRef = useRef<HTMLElement[]>([]);
+
+  // Register a text node for the cascade (left→right stagger on reveal).
+  const registerText = (el: HTMLElement | null) => {
+    if (el && !textsRef.current.includes(el)) {
+      textsRef.current.push(el);
+    }
+  };
 
   useEffect(() => {
     const el = cardRef.current;
-    if (!el) return;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
 
-    // Scroll reveal with 3D entrance
+    const POWER3 = 'cubic-bezier(0.16, 1, 0.3, 1)';
+
+    // Initialise reveal start states.
+    const img = imgRef.current;
+    if (img) {
+      img.style.transform = 'scale(1.1)';
+      img.style.transition = `transform 0.9s ${POWER3}, filter 0.6s ease`;
+    }
+    textsRef.current.forEach((t) => {
+      t.style.opacity = '0';
+      t.style.transform = 'translateX(-24px)';
+      t.style.transition = `opacity 0.7s ${POWER3}, transform 0.7s ${POWER3}`;
+    });
+
+    // Per-item reveal: image scales 1.1 -> 1, text cascades in.
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setTimeout(() => {
             el.style.opacity = '1';
             el.style.transform = 'perspective(1000px) rotateX(0deg) translateY(0)';
+
+            if (imgRef.current) {
+              imgRef.current.style.transform = 'scale(1)';
+            }
+            textsRef.current.forEach((t, ti) => {
+              window.setTimeout(() => {
+                t.style.opacity = '1';
+                t.style.transform = 'translateX(0)';
+              }, ti * 80);
+            });
           }, index * 130);
           observer.unobserve(el);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.25 }
     );
     observer.observe(el);
 
-    // 3D tilt on mouse move
+    // 3D tilt on mouse move (preserved from original).
     const handleMouseMove = (e: MouseEvent) => {
       const rect = el.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width - 0.5;
@@ -255,7 +419,9 @@ function ProjectCard({
           img.style.transform = 'scale(1.04)';
           img.style.filter = 'brightness(0.45) saturate(0.4)';
         }
+        onPointerEnterProject(project, e);
       }}
+      onMouseMove={(e) => onPointerMoveProject(e)}
       onMouseLeave={(e) => {
         const el = e.currentTarget;
         el.style.borderColor = 'rgba(227, 188, 94, 0.1)';
@@ -265,11 +431,13 @@ function ProjectCard({
           img.style.transform = 'scale(1)';
           img.style.filter = 'brightness(0.35) saturate(0.3)';
         }
+        onPointerLeaveProject();
       }}
     >
       {/* Image */}
       <div style={{ position: 'relative', height: '220px', overflow: 'hidden' }}>
         <img
+          ref={imgRef}
           src={project.image}
           alt={project.title}
           style={{
@@ -282,6 +450,7 @@ function ProjectCard({
         />
         {/* Project number */}
         <div
+          ref={registerText}
           style={{
             position: 'absolute',
             top: '1rem',
@@ -306,6 +475,7 @@ function ProjectCard({
           }}
         >
           <h3
+            ref={registerText}
             style={{
               fontFamily: 'Cormorant Garamond, serif',
               fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)',
@@ -317,6 +487,7 @@ function ProjectCard({
             {project.title}
           </h3>
           <p
+            ref={registerText}
             style={{
               fontFamily: 'Inter, sans-serif',
               fontSize: '0.65rem',
@@ -334,6 +505,7 @@ function ProjectCard({
       {/* Content */}
       <div style={{ padding: '1.25rem' }}>
         <p
+          ref={registerText}
           style={{
             fontFamily: 'Inter, sans-serif',
             fontSize: '0.78rem',
@@ -348,6 +520,7 @@ function ProjectCard({
 
         {/* Tags + Link */}
         <div
+          ref={registerText}
           style={{
             display: 'flex',
             alignItems: 'center',

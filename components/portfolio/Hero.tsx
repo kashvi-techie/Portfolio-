@@ -23,6 +23,19 @@ const socials = [
     path: 'M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.3c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V21h-4z' },
 ];
 
+/* Wireframe lotus petals: outer ring (8) + inner ring (8). Order must match the
+   geometry computed in the magnet effect. Each petal points "north" then rotates. */
+const PETALS: { angle: number; len: number; w: number }[] = [
+  ...Array.from({ length: 8 }, (_, i) => ({ angle: i * 45, len: 150, w: 30 })),
+  ...Array.from({ length: 8 }, (_, i) => ({ angle: i * 45 + 22.5, len: 96, w: 20 })),
+];
+
+function petalPath(L: number, w: number): string {
+  const cx = 200;
+  const cy = 200;
+  return `M${cx} ${cy} C ${cx - w} ${cy - L * 0.45}, ${cx - w * 0.5} ${cy - L * 0.9}, ${cx} ${cy - L} C ${cx + w * 0.5} ${cy - L * 0.9}, ${cx + w} ${cy - L * 0.45}, ${cx} ${cy} Z`;
+}
+
 export default function Hero() {
   const nameRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
@@ -35,21 +48,22 @@ export default function Hero() {
   const canvasRef = useRef<HTMLDivElement>(null);
   const tiltRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const lotusBgRef = useRef<HTMLDivElement>(null);
+  const lotusSvgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
-    const STAGGER = 80; // ms between elements
-    const BASE = 150; // initial delay
+    const POWER3 = 'cubic-bezier(0.16, 1, 0.3, 1)'; // ~ power3.out
+    const STAGGER = 80;
+    const BASE = 150;
     const timers: ReturnType<typeof setTimeout>[] = [];
+    const reduce =
+      typeof window !== 'undefined' &&
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Left text: staggered slide-up (translateY 24px) + fade in
-    const leftEls = [
-      nameRef.current,
-      headlineRef.current,
-      subRef.current,
-      ctaRef.current,
-      socialRef.current,
-    ];
+    // Left text (name, sub, cta, social): staggered slide-up + fade
+    const leftEls = [nameRef.current, subRef.current, ctaRef.current, socialRef.current];
     leftEls.forEach((el, i) => {
       if (!el) return;
       el.style.opacity = '0';
@@ -59,11 +73,39 @@ export default function Hero() {
           el.style.transition = `opacity 0.7s ${EASE}, transform 0.7s ${EASE}`;
           el.style.opacity = '1';
           el.style.transform = 'translateY(0)';
-        }, BASE + i * STAGGER),
+        }, reduce ? 0 : BASE + i * STAGGER),
       );
     });
 
-    // Right canvas: gentle scale-in from 0.95 → 1 + fade
+    // Headline: per-line clip-mask reveal — lines slide up from 110% → 0
+    const lines = headlineRef.current
+      ? Array.from(headlineRef.current.querySelectorAll<HTMLElement>('.line-inner'))
+      : [];
+    lines.forEach((el, i) => {
+      el.style.transform = 'translateY(110%)';
+      timers.push(
+        setTimeout(() => {
+          el.style.transition = `transform 0.9s ${POWER3}`;
+          el.style.transform = 'translateY(0)';
+        }, reduce ? 0 : BASE + 60 + i * 110),
+      );
+    });
+
+    // Background wireframe lotus: scale 0.8 → 1 + slight rotate, power3.out
+    const lotusBg = lotusBgRef.current;
+    if (lotusBg) {
+      lotusBg.style.opacity = '0';
+      lotusBg.style.transform = 'scale(0.8) rotate(-6deg)';
+      timers.push(
+        setTimeout(() => {
+          lotusBg.style.transition = `opacity 1.6s ${POWER3}, transform 1.8s ${POWER3}`;
+          lotusBg.style.opacity = '1';
+          lotusBg.style.transform = 'scale(1) rotate(0deg)';
+        }, reduce ? 0 : BASE),
+      );
+    }
+
+    // Right canvas: gentle scale-in 0.95 → 1
     const canvas = canvasRef.current;
     if (canvas) {
       canvas.style.opacity = '0';
@@ -73,43 +115,109 @@ export default function Hero() {
           canvas.style.transition = `opacity 0.9s ${EASE}, transform 0.9s ${EASE}`;
           canvas.style.opacity = '1';
           canvas.style.transform = 'scale(1)';
-        }, BASE + STAGGER),
+        }, reduce ? 0 : BASE + STAGGER),
       );
     }
 
-    // Right 3D element subtly tracks the mouse (fine pointers only)
+    // ── Pointer interactions: portrait tilt + lotus petal magnet ──
     const section = sectionRef.current;
     const tilt = tiltRef.current;
+    const svg = lotusSvgRef.current;
+    const petals = svg ? Array.from(svg.querySelectorAll<SVGGElement>('.magnet-petal')) : [];
+    const petalGeom = PETALS.map((p) => {
+      const a = (p.angle * Math.PI) / 180;
+      return { tx: 200 + p.len * Math.sin(a), ty: 200 - p.len * Math.cos(a) };
+    });
+    const petalCur = petals.map(() => ({ x: 0, y: 0 }));
+    const petalTarget = petals.map(() => ({ x: 0, y: 0 }));
+    let mx = -1;
+    let my = -1;
+    let tiltX = 0;
+    let tiltY = 0;
+    let tiltTX = 0;
+    let tiltTY = 0;
     let raf = 0;
+    let running = true;
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+    const updateTargets = () => {
+      if (tilt && mx >= 0) {
+        const r = tilt.getBoundingClientRect();
+        const dx = (mx - (r.left + r.width / 2)) / window.innerWidth;
+        const dy = (my - (r.top + r.height / 2)) / window.innerHeight;
+        tiltTY = Math.max(-8, Math.min(8, dx * 22));
+        tiltTX = Math.max(-8, Math.min(8, -dy * 22));
+      } else {
+        tiltTX = 0;
+        tiltTY = 0;
+      }
+      if (svg && petals.length) {
+        const r = svg.getBoundingClientRect();
+        const scale = r.width / 400;
+        if (mx >= 0 && scale > 0) {
+          const px = (mx - r.left) / scale;
+          const py = (my - r.top) / scale;
+          const INFLUENCE = 230;
+          const MAXPULL = 16;
+          for (let i = 0; i < petals.length; i += 1) {
+            const vx = px - petalGeom[i].tx;
+            const vy = py - petalGeom[i].ty;
+            const d = Math.hypot(vx, vy) || 1;
+            const pull = Math.max(0, Math.min(MAXPULL, MAXPULL * (1 - d / INFLUENCE)));
+            petalTarget[i].x = (vx / d) * pull;
+            petalTarget[i].y = (vy / d) * pull;
+          }
+        } else {
+          for (let i = 0; i < petals.length; i += 1) {
+            petalTarget[i].x = 0;
+            petalTarget[i].y = 0;
+          }
+        }
+      }
+    };
+
+    const tick = () => {
+      if (!running) return;
+      tiltX = lerp(tiltX, tiltTX, 0.1);
+      tiltY = lerp(tiltY, tiltTY, 0.1);
+      if (tilt) {
+        tilt.style.transform = `perspective(900px) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg)`;
+      }
+      for (let i = 0; i < petals.length; i += 1) {
+        petalCur[i].x = lerp(petalCur[i].x, petalTarget[i].x, 0.12);
+        petalCur[i].y = lerp(petalCur[i].y, petalTarget[i].y, 0.12);
+        petals[i].setAttribute(
+          'transform',
+          `translate(${petalCur[i].x.toFixed(2)} ${petalCur[i].y.toFixed(2)})`,
+        );
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
     const onMove = (e: MouseEvent) => {
-      if (!tilt) return;
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const rect = tilt.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const dx = (e.clientX - cx) / window.innerWidth;
-        const dy = (e.clientY - cy) / window.innerHeight;
-        const rotY = Math.max(-8, Math.min(8, dx * 22));
-        const rotX = Math.max(-8, Math.min(8, -dy * 22));
-        tilt.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-      });
+      mx = e.clientX;
+      my = e.clientY;
+      updateTargets();
     };
     const onLeave = () => {
-      if (!tilt) return;
-      cancelAnimationFrame(raf);
-      tilt.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg)';
+      mx = -1;
+      my = -1;
+      updateTargets();
     };
+
     const finePointer =
       typeof window !== 'undefined' &&
       window.matchMedia &&
       window.matchMedia('(pointer: fine)').matches;
-    if (section && finePointer) {
+
+    if (section && finePointer && !reduce) {
       section.addEventListener('mousemove', onMove);
       section.addEventListener('mouseleave', onLeave);
+      raf = requestAnimationFrame(tick);
     }
 
     return () => {
+      running = false;
       timers.forEach((t) => clearTimeout(t));
       cancelAnimationFrame(raf);
       if (section) {
@@ -150,6 +258,31 @@ export default function Hero() {
           position: 'absolute', top: 0, bottom: 0, left: '47%', width: '1px',
           background: 'linear-gradient(to bottom, transparent 0%, rgba(233, 196, 106, 0.16) 25%, rgba(233, 196, 106, 0.1) 75%, transparent 100%)',
         }} className="hide-mobile" />
+      </div>
+
+      {/* Wireframe vector lotus — background; petals magnet toward the cursor */}
+      <div
+        aria-hidden="true"
+        className="hide-mobile"
+        style={{
+          position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          paddingLeft: '14%', overflow: 'hidden',
+        }}
+      >
+        <div ref={lotusBgRef} style={{ width: 'min(720px, 60vw)', maxWidth: '92vw', willChange: 'transform, opacity' }}>
+          <svg ref={lotusSvgRef} viewBox="0 0 400 400" style={{ width: '100%', height: 'auto', overflow: 'visible' }}>
+            {PETALS.map((p, i) => (
+              <g className="magnet-petal" key={i}>
+                <g transform={`rotate(${p.angle} 200 200)`}>
+                  <path d={petalPath(p.len, p.w)} fill="rgba(233, 196, 106, 0.03)" stroke="rgba(233, 196, 106, 0.4)" strokeWidth="1" />
+                </g>
+              </g>
+            ))}
+            <circle cx="200" cy="200" r="13" fill="none" stroke="rgba(233, 196, 106, 0.55)" strokeWidth="1" />
+            <circle cx="200" cy="200" r="4.5" fill="rgba(233, 196, 106, 0.5)" />
+          </svg>
+        </div>
       </div>
 
       {/* ─── Main grid ─── */}
@@ -193,11 +326,9 @@ export default function Hero() {
               lineHeight: 1.06, color: '#FBF7F0',
               marginBottom: '1.5rem', letterSpacing: '-0.01em',
             }}>
-              I design digital{' '}
-              <em className="gold-gradient-text" style={{ fontStyle: 'italic', display: 'block' }}>
-                experiences
-              </em>
-              that are thoughtful, intelligent &amp; timeless.
+              <span className="line-mask"><span className="line-inner">I design digital</span></span>
+              <span className="line-mask"><span className="line-inner gold-gradient-text" style={{ fontStyle: 'italic' }}>experiences</span></span>
+              <span className="line-mask"><span className="line-inner">that are thoughtful, intelligent &amp; timeless.</span></span>
             </h1>
           </div>
 
@@ -457,6 +588,19 @@ export default function Hero() {
       </div>
 
       <style jsx>{`
+        .line-mask {
+          display: block;
+          overflow: hidden;
+          padding-bottom: 0.08em;
+        }
+        .line-inner {
+          display: block;
+          transform: translateY(110%);
+          will-change: transform;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .line-inner { transform: none !important; }
+        }
         @media (max-width: 768px) {
           .hero-grid { grid-template-columns: 1fr !important; }
         }

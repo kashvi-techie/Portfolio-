@@ -59,10 +59,18 @@ const icons: Record<number, JSX.Element> = {
 
 export default function Skills() {
   const sectionRef = useRef<HTMLElement>(null);
+  const lotusInnerRef = useRef<HTMLDivElement>(null);
+  const lotusRingRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [entered, setEntered] = useState(false);
   const [cardVisible, setCardVisible] = useState(true);
   const [progress, setProgress] = useState(0);
+  // re-mount key for the tag stagger so it cleanly replays on each lock
+  const [tagKey, setTagKey] = useState(0);
+
+  // Latest scroll-derived values shared with the rAF lerp loop (no re-render).
+  const activeIndexRef = useRef(0);
+  const fractionRef = useRef(0); // within-item progress 0..1 for sub-rotation
 
   useEffect(() => {
     const handleScroll = () => {
@@ -82,10 +90,14 @@ export default function Skills() {
 
       const raw = p * skillGroups.length;
       const newIndex = Math.min(Math.floor(raw), skillGroups.length - 1);
+      activeIndexRef.current = newIndex;
+      // fractional progress within the current item (0..1) for a tiny live drift
+      fractionRef.current = Math.min(1, Math.max(0, raw - newIndex));
 
       setActiveIndex((prev) => {
         if (prev !== newIndex) {
           setCardVisible(false);
+          setTagKey((k) => k + 1); // replay tag stagger on each lock
           setTimeout(() => setCardVisible(true), 220);
         }
         return newIndex;
@@ -97,12 +109,42 @@ export default function Skills() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // ── rAF lerp: ease the lotus toward a 90°-snapped target so it "locks" ──
+  useEffect(() => {
+    const reduce =
+      typeof window !== 'undefined' &&
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let raf = 0;
+    let current = activeIndexRef.current * 90; // smoothed rotation (deg)
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+    const tick = () => {
+      // Snapped 90° target per item + a small live sub-rotation (≤8°) from
+      // the within-item fraction so it feels alive but still locks at each step.
+      const base = activeIndexRef.current * 90;
+      const sub = reduce ? 0 : fractionRef.current * 8;
+      const target = base + sub;
+
+      // Ease toward target. Reduced motion snaps; otherwise smooth lerp.
+      current = reduce ? target : lerp(current, target, 0.12);
+      if (Math.abs(current - target) < 0.01) current = target;
+
+      const inner = lotusInnerRef.current;
+      const ring = lotusRingRef.current;
+      if (inner) inner.style.transform = `rotate(${current}deg)`;
+      if (ring) ring.style.transform = `rotate(${-current * 0.5}deg)`;
+
+      raf = window.requestAnimationFrame(tick);
+    };
+
+    raf = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(raf);
+  }, []);
+
   const group = skillGroups[activeIndex];
   const totalScrollDist = skillGroups.length + 1; // sections of 100vh
-
-  // Lotus rotates continuously with scroll (one full turn across the section),
-  // visibly passing Front → Left → Right → Back as each capability appears.
-  const lotusRotation = progress * 360;
 
   return (
     <section
@@ -150,12 +192,13 @@ export default function Skills() {
             position: 'absolute', inset: '8%', borderRadius: '50%',
             background: 'radial-gradient(circle, rgba(233,196,106,0.14) 0%, transparent 65%)',
           }} />
-          {/* rotating real lotus (dark bg blends via screen blend) */}
+          {/* rotating real lotus — driven by rAF lerp toward a 90°-snapped target */}
           <div
+            ref={lotusInnerRef}
             style={{
               position: 'absolute', inset: 0,
-              transform: `rotate(${lotusRotation}deg)`,
-              transition: 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
+              transform: `rotate(${activeIndex * 90}deg)`,
+              willChange: 'transform',
               borderRadius: '50%',
               WebkitMaskImage: 'radial-gradient(circle, #000 58%, transparent 72%)',
               maskImage: 'radial-gradient(circle, #000 58%, transparent 72%)',
@@ -171,13 +214,16 @@ export default function Skills() {
               }}
             />
           </div>
-          {/* thin rotating ring */}
-          <div style={{
-            position: 'absolute', inset: '2%', borderRadius: '50%',
-            border: '1px solid rgba(233, 196, 106, 0.18)',
-            transform: `rotate(${-lotusRotation * 0.5}deg)`,
-            transition: 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-          }} />
+          {/* thin counter-rotating ring — also lerped via rAF */}
+          <div
+            ref={lotusRingRef}
+            style={{
+              position: 'absolute', inset: '2%', borderRadius: '50%',
+              border: '1px solid rgba(233, 196, 106, 0.18)',
+              transform: `rotate(${-activeIndex * 45}deg)`,
+              willChange: 'transform',
+            }}
+          />
           {/* POV label */}
           <div style={{
             position: 'absolute', bottom: '6%', left: '50%', transform: 'translateX(-50%)',
@@ -291,18 +337,19 @@ export default function Skills() {
 
                 <div style={{ width: '40px', height: '1px', background: 'rgba(233, 196, 106, 0.45)', marginBottom: '1.5rem' }} />
 
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                {/* keyed to tagKey so the stagger-fade cleanly replays on each lock */}
+                <div key={tagKey} style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                   {group.skills.map((skill, j) => (
                     <span
                       key={j}
+                      className="skills-tag"
                       style={{
                         fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', letterSpacing: '0.05em',
                         padding: '0.3rem 0.8rem', background: 'rgba(233, 196, 106, 0.1)',
                         border: '1px solid rgba(233, 196, 106, 0.22)', borderRadius: '9999px',
                         color: 'rgba(251, 247, 240, 0.7)',
-                        opacity: cardVisible ? 1 : 0,
-                        transform: cardVisible ? 'translateY(0)' : 'translateY(8px)',
-                        transition: `opacity 0.4s ease ${j * 0.05}s, transform 0.4s ease ${j * 0.05}s`,
+                        // stagger ~60ms each; eased re-entry (power3.out ≈ cubic-bezier below)
+                        animationDelay: `${j * 0.06}s`,
                       }}
                     >
                       {skill}
@@ -326,9 +373,27 @@ export default function Skills() {
       </div>
 
       <style jsx>{`
+        /* Tag stagger-fade — replays whenever the keyed container re-mounts
+           on each lotus lock. Approximates power3.out. */
+        @keyframes tagRise {
+          from { opacity: 0; transform: translateY(8px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .skills-tag {
+          opacity: 0;
+          transform: translateY(8px);
+          animation: tagRise 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
         @media (max-width: 768px) {
           .skills-inner-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
           .skills-lotus { opacity: 0.25; left: 50% !important; transform: translate(-50%, -50%) !important; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .skills-tag {
+            opacity: 1;
+            transform: none;
+            animation: none !important;
+          }
         }
       `}</style>
     </section>
