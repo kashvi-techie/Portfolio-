@@ -24,65 +24,105 @@ const socials = [
 ];
 
 export default function Hero() {
+  const nameRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
+  const socialRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const portraitRef = useRef<HTMLDivElement>(null);
   const lotusRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const tiltRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const els = [headlineRef.current, subRef.current, ctaRef.current];
-    els.forEach((el, i) => {
+    const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+    const STAGGER = 80; // ms between elements
+    const BASE = 150; // initial delay
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
+    // Left text: staggered slide-up (translateY 24px) + fade in
+    const leftEls = [
+      nameRef.current,
+      headlineRef.current,
+      subRef.current,
+      ctaRef.current,
+      socialRef.current,
+    ];
+    leftEls.forEach((el, i) => {
       if (!el) return;
       el.style.opacity = '0';
-      el.style.transform = 'translateY(28px)';
-      setTimeout(() => {
-        if (!el) return;
-        el.style.transition = 'opacity 1.1s cubic-bezier(0.23, 1, 0.32, 1), transform 1.1s cubic-bezier(0.23, 1, 0.32, 1)';
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
-      }, 250 + i * 200);
+      el.style.transform = 'translateY(24px)';
+      timers.push(
+        setTimeout(() => {
+          el.style.transition = `opacity 0.7s ${EASE}, transform 0.7s ${EASE}`;
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }, BASE + i * STAGGER),
+      );
     });
 
-    const portrait = portraitRef.current;
-    if (portrait) {
-      portrait.style.opacity = '0';
-      portrait.style.transform = 'translateX(30px) scale(0.97)';
-      setTimeout(() => {
-        portrait.style.transition = 'opacity 1.4s cubic-bezier(0.23, 1, 0.32, 1), transform 1.4s cubic-bezier(0.23, 1, 0.32, 1)';
-        portrait.style.opacity = '1';
-        portrait.style.transform = 'translateX(0) scale(1)';
-      }, 400);
+    // Right canvas: gentle scale-in from 0.95 → 1 + fade
+    const canvas = canvasRef.current;
+    if (canvas) {
+      canvas.style.opacity = '0';
+      canvas.style.transform = 'scale(0.95)';
+      timers.push(
+        setTimeout(() => {
+          canvas.style.transition = `opacity 0.9s ${EASE}, transform 0.9s ${EASE}`;
+          canvas.style.opacity = '1';
+          canvas.style.transform = 'scale(1)';
+        }, BASE + STAGGER),
+      );
     }
 
-    // Lotus companion rises up out of the availability banner
-    const lotus = lotusRef.current;
-    if (lotus) {
-      lotus.style.opacity = '0';
-      lotus.style.transform = 'translateY(70px) scale(0.9)';
-      setTimeout(() => {
-        lotus.style.transition = 'opacity 1.5s cubic-bezier(0.23, 1, 0.32, 1), transform 1.6s cubic-bezier(0.23, 1, 0.32, 1)';
-        lotus.style.opacity = '1';
-        lotus.style.transform = 'translateY(0) scale(1)';
-      }, 750);
+    // Right 3D element subtly tracks the mouse (fine pointers only)
+    const section = sectionRef.current;
+    const tilt = tiltRef.current;
+    let raf = 0;
+    const onMove = (e: MouseEvent) => {
+      if (!tilt) return;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const rect = tilt.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const dx = (e.clientX - cx) / window.innerWidth;
+        const dy = (e.clientY - cy) / window.innerHeight;
+        const rotY = Math.max(-8, Math.min(8, dx * 22));
+        const rotX = Math.max(-8, Math.min(8, -dy * 22));
+        tilt.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      });
+    };
+    const onLeave = () => {
+      if (!tilt) return;
+      cancelAnimationFrame(raf);
+      tilt.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg)';
+    };
+    const finePointer =
+      typeof window !== 'undefined' &&
+      window.matchMedia &&
+      window.matchMedia('(pointer: fine)').matches;
+    if (section && finePointer) {
+      section.addEventListener('mousemove', onMove);
+      section.addEventListener('mouseleave', onLeave);
     }
 
-    const card = cardRef.current;
-    if (card) {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(20px)';
-      setTimeout(() => {
-        card.style.transition = 'opacity 1s cubic-bezier(0.23, 1, 0.32, 1), transform 1s cubic-bezier(0.23, 1, 0.32, 1)';
-        card.style.opacity = '1';
-        card.style.transform = 'translateY(0)';
-      }, 1000);
-    }
+    return () => {
+      timers.forEach((t) => clearTimeout(t));
+      cancelAnimationFrame(raf);
+      if (section) {
+        section.removeEventListener('mousemove', onMove);
+        section.removeEventListener('mouseleave', onLeave);
+      }
+    };
   }, []);
 
   return (
     <section
       id="home"
+      ref={sectionRef}
       style={{
         position: 'relative',
         minHeight: '100vh',
@@ -128,7 +168,7 @@ export default function Hero() {
       >
         {/* ── Left: Text ── */}
         <div style={{ maxWidth: '580px' }}>
-          <div ref={subRef as React.RefObject<HTMLParagraphElement>}>
+          <div ref={nameRef}>
             <p style={{
               fontFamily: 'Inter, sans-serif', fontSize: '0.68rem',
               letterSpacing: '0.3em', textTransform: 'uppercase',
@@ -185,20 +225,22 @@ export default function Hero() {
                 fontFamily: 'Inter, sans-serif', fontSize: '0.78rem',
                 letterSpacing: '0.08em', color: '#F8E7B4',
                 textDecoration: 'none', cursor: 'pointer',
-                transition: 'all 0.4s cubic-bezier(0.23, 1, 0.32, 1)',
+                transition: 'all 0.2s cubic-bezier(0.22, 1, 0.36, 1)',
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.background = 'rgba(233, 196, 106, 0.24)';
-                el.style.borderColor = 'rgba(233, 196, 106, 0.9)';
-                el.style.transform = 'translateY(-2px)';
-                el.style.boxShadow = '0 10px 34px rgba(233, 196, 106, 0.22)';
+                el.style.background = '#6366f1';
+                el.style.borderColor = '#6366f1';
+                el.style.color = '#ffffff';
+                el.style.transform = 'scale(1.05)';
+                el.style.boxShadow = '0 10px 30px rgba(99, 102, 241, 0.35)';
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLElement;
                 el.style.background = 'rgba(233, 196, 106, 0.14)';
                 el.style.borderColor = 'rgba(233, 196, 106, 0.55)';
-                el.style.transform = 'translateY(0)';
+                el.style.color = '#F8E7B4';
+                el.style.transform = 'scale(1)';
                 el.style.boxShadow = 'none';
               }}
             >
@@ -221,17 +263,23 @@ export default function Hero() {
                 fontFamily: 'Inter, sans-serif', fontSize: '0.78rem',
                 letterSpacing: '0.08em', color: 'rgba(251, 247, 240, 0.6)',
                 textDecoration: 'none', cursor: 'pointer',
-                transition: 'all 0.35s ease',
+                transition: 'all 0.2s cubic-bezier(0.22, 1, 0.36, 1)',
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.color = '#E9C46A';
-                el.style.borderColor = 'rgba(233, 196, 106, 0.5)';
+                el.style.background = '#6366f1';
+                el.style.color = '#ffffff';
+                el.style.borderColor = '#6366f1';
+                el.style.transform = 'scale(1.05)';
+                el.style.boxShadow = '0 10px 30px rgba(99, 102, 241, 0.35)';
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLElement;
+                el.style.background = 'transparent';
                 el.style.color = 'rgba(251, 247, 240, 0.6)';
                 el.style.borderColor = 'rgba(251, 247, 240, 0.2)';
+                el.style.transform = 'scale(1)';
+                el.style.boxShadow = 'none';
               }}
             >
               <CornerLotus pos="tl" /><CornerLotus pos="tr" />
@@ -241,7 +289,7 @@ export default function Hero() {
           </div>
 
           {/* Social links below the CTAs */}
-          <div style={{
+          <div ref={socialRef} style={{
             display: 'flex', alignItems: 'center', gap: '1.5rem',
             marginTop: '2rem', flexWrap: 'wrap',
           }}>
@@ -271,7 +319,8 @@ export default function Hero() {
 
         {/* ── Right: Portrait + lotus companion + availability banner ── */}
         <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }} className="hero-right">
-          <div style={{ position: 'relative', width: 'min(360px, 80vw, 40vh)' }}>
+          <div ref={canvasRef} style={{ width: 'min(360px, 80vw, 40vh)', willChange: 'transform, opacity' }}>
+            <div ref={tiltRef} style={{ position: 'relative', transition: 'transform 0.25s ease-out', transformStyle: 'preserve-3d', willChange: 'transform' }}>
 
             {/* Lotus companion image — beside the portrait, rising from the banner */}
             <div
@@ -392,6 +441,7 @@ export default function Hero() {
                   Open to opportunities
                 </span>
               </div>
+            </div>
             </div>
           </div>
         </div>
