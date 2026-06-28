@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from 'react';
 
 const stats = [
-  { value: '2+', label: 'Years of\nexperience building products' },
-  { value: '10+', label: 'Projects\nshipped successfully' },
-  { value: '100%', label: 'Commitment to\nquality & user satisfaction' },
+  { value: '3', label: 'AI products\nshipped end-to-end' },
+  { value: '10+', label: 'Projects\nbuilt & shipped' },
+  { value: '92', label: 'Google PageSpeed\non a live site' },
 ];
 
 // Split a stat value into its leading numeric target and the surrounding

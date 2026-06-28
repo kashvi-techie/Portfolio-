@@ -37,7 +37,7 @@ const projects = [
       'https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=800',
     tags: ['Next.js', 'TypeScript', 'Gemini API', 'Vercel'],
     metrics: ['Lighthouse 90', 'Prompt → UI', 'Vercel Edge'],
-    href: 'https://ai-image-to-saa-s-product-generator-izfz4ehkq.vercel.app/',
+    href: 'https://ai-image-to-saa-s-product-generator.vercel.app/',
   },
   {
     number: '04',
@@ -49,7 +49,19 @@ const projects = [
       'https://images.pexels.com/photos/5412270/pexels-photo-5412270.jpeg?auto=compress&cs=tinysrgb&w=800',
     tags: ['Next.js', 'TypeScript', 'Framer Motion', 'Vercel'],
     metrics: ['Lighthouse 93', '60fps motion', 'Vercel'],
-    href: 'https://pslytherr-awrd0zxm0-kashvis-projects-25d3dcb0.vercel.app/',
+    href: 'https://pslytherr.vercel.app/',
+  },
+  {
+    number: '05',
+    title: 'JISSI',
+    subtitle: 'AI Voice Assistant (Mobile)',
+    description:
+      'Cross-platform AI voice assistant built with Expo & React Native. Speech-to-text input, an LLM reasoning core, and text-to-speech output — architected with a swappable AI-provider layer.',
+    image:
+      'https://images.pexels.com/photos/8294606/pexels-photo-8294606.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['React Native', 'Expo', 'TypeScript', 'Gemini'],
+    metrics: ['Voice I/O', 'LLM core', 'Cross-platform'],
+    href: 'https://github.com/kashvi-techie/Jissi',
   },
 ];
 
