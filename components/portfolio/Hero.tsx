@@ -233,7 +233,7 @@ export default function Hero() {
       ref={sectionRef}
       style={{
         position: 'relative',
-        minHeight: '100vh',
+        minHeight: '100svh',
         display: 'flex',
         alignItems: 'center',
         overflow: 'hidden',
@@ -290,7 +290,7 @@ export default function Hero() {
         style={{
           position: 'relative', zIndex: 10,
           maxWidth: '1400px', margin: '0 auto',
-          padding: 'clamp(4.5rem, 7vh, 6rem) clamp(1.25rem,4vw,2rem) clamp(2.5rem, 5vh, 4rem)',
+          padding: 'clamp(4rem, 6vh, 5.25rem) clamp(1.25rem,4vw,2rem) clamp(1.5rem, 3vh, 2.75rem)',
           width: '100%',
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
@@ -381,7 +381,7 @@ export default function Hero() {
             </a>
 
             <a
-              href="https://drive.google.com/file/d/1_m6QBtwk-sG62psjpfqGgzv0XeZ_ISb1/view?usp=sharing"
+              href="https://docs.google.com/document/d/1xA5oilQ8cKMq1D1ZkWESv2Hbu63ROQZF/edit?usp=sharing&ouid=115142903580697304861&rtpof=true&sd=true"
               target="_blank"
               rel="noopener noreferrer"
               className="cta-lux"
@@ -450,7 +450,7 @@ export default function Hero() {
 
         {/* ── Right: Portrait + lotus companion + availability banner ── */}
         <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }} className="hero-right">
-          <div ref={canvasRef} style={{ width: 'min(360px, 80vw, 40vh)', willChange: 'transform, opacity' }}>
+          <div ref={canvasRef} style={{ width: 'clamp(240px, 24vw, 320px)', maxWidth: '80vw', willChange: 'transform, opacity' }}>
             <div ref={tiltRef} style={{ position: 'relative', transition: 'transform 0.25s ease-out', transformStyle: 'preserve-3d', willChange: 'transform' }}>
 
             {/* Lotus companion image — beside the portrait, rising from the banner */}
@@ -499,7 +499,7 @@ export default function Hero() {
               <div style={{
                 position: 'relative', zIndex: 1, borderRadius: '14px',
                 overflow: 'hidden', border: '1px solid rgba(233, 196, 106, 0.3)',
-                aspectRatio: '3/4', background: '#13261D',
+                aspectRatio: '9/16', background: '#13261D',
                 boxShadow: '0 30px 70px rgba(0,0,0,0.5), 0 0 50px rgba(233,196,106,0.06)',
               }}>
                 {/* Soft lotus glow behind */}
@@ -510,14 +510,14 @@ export default function Hero() {
 
                 {/* Actual portrait — clean & bright */}
                 <img
-                  src="/images/portrait.webp"
+                  src="/images/hero-photo.png"
                   alt="Kashvi Pundir"
-                  width={660}
-                  height={1174}
+                  width={899}
+                  height={1599}
                   decoding="async"
                   style={{
                     position: 'absolute', inset: 0, width: '100%', height: '100%',
-                    objectFit: 'cover', objectPosition: 'center top', zIndex: 2,
+                    objectFit: 'cover', objectPosition: 'center center', zIndex: 2,
                     filter: 'brightness(1.06) contrast(1.04) saturate(1.06)',
                   }}
                 />
@@ -606,6 +606,18 @@ export default function Hero() {
         }
         @media (max-width: 768px) {
           .hero-grid { grid-template-columns: 1fr !important; }
+          #home {
+            align-items: flex-start !important;
+          }
+          .hero-grid {
+            min-height: 100svh;
+            padding-top: 4.5rem !important;
+            padding-bottom: 1.25rem !important;
+            gap: 1.25rem !important;
+          }
+          .hero-right > div {
+            width: min(58vw, 230px) !important;
+          }
         }
       `}</style>
     </section>
