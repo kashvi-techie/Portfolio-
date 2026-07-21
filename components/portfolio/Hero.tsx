@@ -1,6 +1,14 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useEffect, useRef } from 'react';
+
+const AICommandPalette = dynamic(() => import('@/components/portfolio/AICommandPalette'), {
+  ssr: false,
+  loading: () => (
+    <div className="mt-7 h-[192px] w-full max-w-[470px] rounded-lg border border-gold-300/15 bg-forest-950/35 backdrop-blur-xl" />
+  ),
+});
 
 /* Small lotus glyph used for the CTA corner-bloom effect */
 function CornerLotus({ pos }: { pos: 'tl' | 'tr' | 'bl' | 'br' }) {
@@ -341,8 +349,10 @@ export default function Hero() {
             clean code and meaningful design.
           </p>
 
+          <AICommandPalette />
+
           {/* CTAs with corner-lotus bloom */}
-          <div ref={ctaRef} style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+          <div ref={ctaRef} style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center', marginTop: '1rem' }}>
             <a
               href="#work"
               onClick={(e) => { e.preventDefault(); document.querySelector('#work')?.scrollIntoView({ behavior: 'smooth' }); }}

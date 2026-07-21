@@ -73,6 +73,24 @@ export default function Work() {
   // ---- Shared glassmorphic pointer-tracking preview capsule ----
   const capsuleRef = useRef<HTMLDivElement>(null);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
+  const [projectFilter, setProjectFilter] = useState('all');
+
+  useEffect(() => {
+    const handleFilter = (event: Event) => {
+      const query = (event as CustomEvent<{ query?: string }>).detail?.query?.toLowerCase() || 'all';
+      setProjectFilter(query);
+    };
+
+    window.addEventListener('portfolio:project-filter', handleFilter);
+    return () => window.removeEventListener('portfolio:project-filter', handleFilter);
+  }, []);
+
+  const filteredProjects = projectFilter === 'all'
+    ? projects
+    : projects.filter((project) => {
+        const haystack = `${project.title} ${project.subtitle} ${project.description} ${project.tags.join(' ')} ${project.metrics.join(' ')}`.toLowerCase();
+        return haystack.includes(projectFilter);
+      });
 
   // Pointer spring state lives in refs so the single rAF loop can read/write
   // without triggering React re-renders.
@@ -238,9 +256,9 @@ export default function Work() {
           }}
           className="work-grid"
         >
-          {projects.map((project, i) => (
+          {filteredProjects.map((project, i) => (
             <ProjectCard
-              key={i}
+              key={project.title}
               project={project}
               index={i}
               onPointerEnterProject={handleProjectEnter}
