@@ -1,6 +1,14 @@
-'use client';
+﻿'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+const InteractiveLotus3D = dynamic(() => import('@/components/portfolio/InteractiveLotus3D'), {
+  ssr: false,
+  loading: () => <LotusFallback />,
+});
 
 const skillGroups = [
   {
@@ -15,14 +23,14 @@ const skillGroups = [
     pov: 'Left',
     color: 'rgba(31, 122, 132, 0.12)',
     skills: ['Gemini 1.5 API', 'VectorShift', 'LLM Integration', 'AI Stream Architecture', 'Cursor', 'V0.dev'],
-    summary: 'Integrating intelligent AI pipelines that enhance user experiences — from semantic retrieval to real-time streaming.',
+    summary: 'Integrating intelligent AI pipelines that enhance user experiences - from semantic retrieval to real-time streaming.',
   },
   {
     category: 'Design Systems',
     pov: 'Right',
     color: 'rgba(243, 216, 216, 0.07)',
     skills: ['Figma', 'Design Tokens', 'Component Architecture', 'Information Architecture', 'Prototyping'],
-    summary: 'Crafting cohesive design languages that scale — from atomic components to full product systems.',
+    summary: 'Crafting cohesive design languages that scale - from atomic components to full product systems.',
   },
   {
     category: 'Product Architecture',
@@ -57,94 +65,114 @@ const icons: Record<number, JSX.Element> = {
   ),
 };
 
+function LotusFallback() {
+  return (
+    <div className="skills-lotus-fallback" aria-hidden="true">
+      <div className="fallback-ring" />
+      <div className="fallback-core" />
+      <style jsx>{`
+        .skills-lotus-fallback {
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(233, 196, 106, 0.16) 0%, rgba(31, 122, 132, 0.06) 36%, transparent 68%);
+        }
+        .fallback-ring {
+          position: absolute;
+          inset: 14%;
+          border: 1px solid rgba(233, 196, 106, 0.22);
+          border-radius: 50%;
+        }
+        .fallback-core {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: 18%;
+          aspect-ratio: 1;
+          transform: translate(-50%, -50%);
+          border-radius: 50%;
+          background: rgba(233, 196, 106, 0.28);
+          box-shadow: 0 0 50px rgba(233, 196, 106, 0.2);
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function updateProgressRefs(
+  progress: number,
+  scrollProgressRef: MutableRefObject<number>,
+  activeIndexRef: MutableRefObject<number>,
+  setActiveIndex: (updater: (prev: number) => number) => void,
+  setCardVisible: (visible: boolean) => void,
+  setTagKey: (updater: (prev: number) => number) => void,
+) {
+  scrollProgressRef.current = progress;
+  const raw = progress * skillGroups.length;
+  const nextIndex = Math.min(Math.floor(raw), skillGroups.length - 1);
+  activeIndexRef.current = nextIndex;
+
+  setActiveIndex((previous) => {
+    if (previous !== nextIndex) {
+      setCardVisible(false);
+      setTagKey((key) => key + 1);
+      window.setTimeout(() => setCardVisible(true), 220);
+    }
+    return nextIndex;
+  });
+}
+
 export default function Skills() {
   const sectionRef = useRef<HTMLElement>(null);
-  const lotusInnerRef = useRef<HTMLDivElement>(null);
-  const lotusRingRef = useRef<HTMLDivElement>(null);
+  const scrollProgressRef = useRef(0);
+  const activeIndexRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [entered, setEntered] = useState(false);
   const [cardVisible, setCardVisible] = useState(true);
-  const [progress, setProgress] = useState(0);
-  // re-mount key for the tag stagger so it cleanly replays on each lock
   const [tagKey, setTagKey] = useState(0);
 
-  // Latest scroll-derived values shared with the rAF lerp loop (no re-render).
-  const activeIndexRef = useRef(0);
-  const fractionRef = useRef(0); // within-item progress 0..1 for sub-rotation
-
   useEffect(() => {
-    const handleScroll = () => {
-      const section = sectionRef.current;
-      if (!section) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const section = sectionRef.current;
+    if (!section) return;
 
-      const rect = section.getBoundingClientRect();
-      const scrolledIn = -rect.top;
-      const totalScrollable = section.offsetHeight - window.innerHeight;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      if (scrolledIn < 0) { setEntered(false); return; }
-      if (scrolledIn > totalScrollable) return;
+    const trigger = ScrollTrigger.create({
+      trigger: section,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: reduceMotion ? false : 0.75,
+      invalidateOnRefresh: true,
+      onEnter: () => setEntered(true),
+      onEnterBack: () => setEntered(true),
+      onLeaveBack: () => setEntered(false),
+      onUpdate: (self) => {
+        updateProgressRefs(
+          self.progress,
+          scrollProgressRef,
+          activeIndexRef,
+          setActiveIndex,
+          setCardVisible,
+          setTagKey,
+        );
+      },
+    });
 
-      setEntered(true);
-      const p = Math.max(0, Math.min(1, scrolledIn / totalScrollable));
-      setProgress(p);
+    updateProgressRefs(
+      trigger.progress,
+      scrollProgressRef,
+      activeIndexRef,
+      setActiveIndex,
+      setCardVisible,
+      setTagKey,
+    );
 
-      const raw = p * skillGroups.length;
-      const newIndex = Math.min(Math.floor(raw), skillGroups.length - 1);
-      activeIndexRef.current = newIndex;
-      // fractional progress within the current item (0..1) for a tiny live drift
-      fractionRef.current = Math.min(1, Math.max(0, raw - newIndex));
-
-      setActiveIndex((prev) => {
-        if (prev !== newIndex) {
-          setCardVisible(false);
-          setTagKey((k) => k + 1); // replay tag stagger on each lock
-          setTimeout(() => setCardVisible(true), 220);
-        }
-        return newIndex;
-      });
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // ── rAF lerp: ease the lotus toward a 90°-snapped target so it "locks" ──
-  useEffect(() => {
-    const reduce =
-      typeof window !== 'undefined' &&
-      window.matchMedia &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    let raf = 0;
-    let current = activeIndexRef.current * 90; // smoothed rotation (deg)
-    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-
-    const tick = () => {
-      // Snapped 90° target per item + a small live sub-rotation (≤8°) from
-      // the within-item fraction so it feels alive but still locks at each step.
-      const base = activeIndexRef.current * 90;
-      const sub = reduce ? 0 : fractionRef.current * 8;
-      const target = base + sub;
-
-      // Ease toward target. Reduced motion snaps; otherwise smooth lerp.
-      current = reduce ? target : lerp(current, target, 0.12);
-      if (Math.abs(current - target) < 0.01) current = target;
-
-      const inner = lotusInnerRef.current;
-      const ring = lotusRingRef.current;
-      if (inner) inner.style.transform = `rotate(${current}deg)`;
-      if (ring) ring.style.transform = `rotate(${-current * 0.5}deg)`;
-
-      raf = window.requestAnimationFrame(tick);
-    };
-
-    raf = window.requestAnimationFrame(tick);
-    return () => window.cancelAnimationFrame(raf);
+    return () => trigger.kill();
   }, []);
 
   const group = skillGroups[activeIndex];
-  const totalScrollDist = skillGroups.length + 1; // sections of 100vh
+  const totalScrollDist = skillGroups.length + 1;
 
   return (
     <section
@@ -156,85 +184,37 @@ export default function Skills() {
         background: 'linear-gradient(180deg, #13261D 0%, #0E1B15 100%)',
       }}
     >
-      {/* Sticky viewport — stays fixed while text/cards change */}
       <div
         style={{
           position: 'sticky',
           top: 0,
-          height: '100vh',
+          height: '100svh',
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
         }}
       >
-        {/* Ambient background glow */}
         <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 50% 60% at 78% 50%, rgba(31, 122, 132, 0.14) 0%, transparent 65%)' }} />
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 45% 55% at 18% 50%, rgba(233, 196, 106, 0.08) 0%, transparent 60%)' }} />
         </div>
 
-        {/* ─── Rotating lotus pinned at the LEFT — POV turns on each scroll ─── */}
         <div
           className="skills-lotus"
           style={{
             position: 'absolute',
-            left: 'clamp(-8%, -2vw, 2%)',
+            left: 'clamp(-9%, -2vw, 2%)',
             top: '50%',
             transform: 'translateY(-50%)',
-            width: 'clamp(260px, 34vw, 460px)',
-            height: 'clamp(260px, 34vw, 460px)',
-            pointerEvents: 'none',
+            width: 'clamp(280px, 35vw, 500px)',
+            height: 'clamp(280px, 35vw, 500px)',
+            pointerEvents: 'auto',
             zIndex: 1,
           }}
         >
-          {/* soft halo */}
-          <div style={{
-            position: 'absolute', inset: '8%', borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(233,196,106,0.14) 0%, transparent 65%)',
-          }} />
-          {/* rotating real lotus — driven by rAF lerp toward a 90°-snapped target */}
-          <div
-            ref={lotusInnerRef}
-            style={{
-              position: 'absolute', inset: 0,
-              transform: `rotate(${activeIndex * 90}deg)`,
-              willChange: 'transform',
-              borderRadius: '50%',
-              WebkitMaskImage: 'radial-gradient(circle, #000 58%, transparent 72%)',
-              maskImage: 'radial-gradient(circle, #000 58%, transparent 72%)',
-            }}
-          >
-            <img
-              src="/images/lotus/lotus-dark.jpg"
-              alt="Rotating lotus"
-              style={{
-                width: '100%', height: '100%', objectFit: 'cover',
-                mixBlendMode: 'screen',
-                filter: 'brightness(1.15) saturate(1.15) contrast(1.05)',
-              }}
-            />
-          </div>
-          {/* thin counter-rotating ring — also lerped via rAF */}
-          <div
-            ref={lotusRingRef}
-            style={{
-              position: 'absolute', inset: '2%', borderRadius: '50%',
-              border: '1px solid rgba(233, 196, 106, 0.18)',
-              transform: `rotate(${-activeIndex * 45}deg)`,
-              willChange: 'transform',
-            }}
-          />
-          {/* POV label */}
-          <div style={{
-            position: 'absolute', bottom: '6%', left: '50%', transform: 'translateX(-50%)',
-            fontFamily: 'Inter, sans-serif', fontSize: '0.55rem', letterSpacing: '0.3em',
-            textTransform: 'uppercase', color: 'rgba(233, 196, 106, 0.55)',
-          }}>
-            {group.pov} view
-          </div>
+          <InteractiveLotus3D progressRef={scrollProgressRef} activeIndex={activeIndex} label={group.pov} />
         </div>
 
-        {/* Main content grid */}
         <div
           style={{
             position: 'relative', zIndex: 10, maxWidth: '1400px', margin: '0 auto',
@@ -244,7 +224,6 @@ export default function Skills() {
           }}
           className="skills-inner-grid"
         >
-          {/* Left: heading + dots (sits over the rotating lotus) */}
           <div style={{ position: 'relative', zIndex: 2 }}>
             <p
               className="section-label"
@@ -276,12 +255,11 @@ export default function Skills() {
               color: 'rgba(251, 247, 240, 0.55)', fontWeight: 300, maxWidth: '340px',
               marginBottom: '2.5rem', opacity: entered ? 1 : 0, transition: 'opacity 0.8s ease 0.2s',
             }}>
-              Scroll to explore each discipline — the lotus turns as every capability rises into view.
+              Scroll to explore each discipline - the 3D lotus turns and blooms as every capability rises into view.
             </p>
 
-            {/* Progress dots */}
             <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', opacity: entered ? 1 : 0, transition: 'opacity 0.8s ease 0.25s' }}>
-              {skillGroups.map((g, i) => (
+              {skillGroups.map((_, i) => (
                 <div key={i} style={{
                   width: i === activeIndex ? '28px' : '8px', height: '3px', borderRadius: '2px',
                   background: i === activeIndex ? '#E9C46A' : 'rgba(233, 196, 106, 0.28)',
@@ -294,7 +272,6 @@ export default function Skills() {
             </div>
           </div>
 
-          {/* Right: animated skill card — one by one */}
           <div style={{ perspective: '1200px' }}>
             <div
               style={{
@@ -337,18 +314,16 @@ export default function Skills() {
 
                 <div style={{ width: '40px', height: '1px', background: 'rgba(233, 196, 106, 0.45)', marginBottom: '1.5rem' }} />
 
-                {/* keyed to tagKey so the stagger-fade cleanly replays on each lock */}
                 <div key={tagKey} style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                   {group.skills.map((skill, j) => (
                     <span
-                      key={j}
+                      key={skill}
                       className="skills-tag"
                       style={{
                         fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', letterSpacing: '0.05em',
                         padding: '0.3rem 0.8rem', background: 'rgba(233, 196, 106, 0.1)',
                         border: '1px solid rgba(233, 196, 106, 0.22)', borderRadius: '9999px',
                         color: 'rgba(251, 247, 240, 0.7)',
-                        // stagger ~60ms each; eased re-entry (power3.out ≈ cubic-bezier below)
                         animationDelay: `${j * 0.06}s`,
                       }}
                     >
@@ -361,7 +336,6 @@ export default function Skills() {
           </div>
         </div>
 
-        {/* Scroll hint */}
         <div style={{
           position: 'absolute', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', zIndex: 10,
           display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem',
@@ -373,8 +347,6 @@ export default function Skills() {
       </div>
 
       <style jsx>{`
-        /* Tag stagger-fade — replays whenever the keyed container re-mounts
-           on each lotus lock. Approximates power3.out. */
         @keyframes tagRise {
           from { opacity: 0; transform: translateY(8px); }
           to   { opacity: 1; transform: translateY(0); }
@@ -386,7 +358,15 @@ export default function Skills() {
         }
         @media (max-width: 768px) {
           .skills-inner-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
-          .skills-lotus { opacity: 0.25; left: 50% !important; transform: translate(-50%, -50%) !important; }
+          .skills-lotus {
+            opacity: 0.34;
+            left: 50% !important;
+            top: 28% !important;
+            width: min(78vw, 320px) !important;
+            height: min(78vw, 320px) !important;
+            transform: translate(-50%, -50%) !important;
+            pointer-events: none !important;
+          }
         }
         @media (prefers-reduced-motion: reduce) {
           .skills-tag {
