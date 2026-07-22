@@ -422,7 +422,7 @@ export default function Experience() {
                   userSelect: 'none',
                 }}
               >
-                "
+                &quot;
               </div>
               <blockquote
                 style={{
